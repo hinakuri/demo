@@ -1,0 +1,47 @@
+# Spring設定
+
+spring:
+  datasource:
+    #url: jdbc:sqlite:C:\Users\h_kur\test_sqlite3.db
+    driverClassName: "org.postgresql.Driver"
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    user: "postgres"
+    password: "password"
+    hikari:
+      idle-timeout: 10000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      temp:
+        use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        globally_quoted_identifiers: true
+  message:
+    fallback-to-system-locale: false
+    basename: i18n/messages, i18n/exceptionMessages
+    cache-duration: -1
+    encoding: UTF-8
+
+# Server設定
+server:
+  port: 80
+  servlet:
+    context-path:
+
+# Log設定
+logging:
+
+  #file: ./log/api.log
+  
+  pattern:
+    console: "%d{HH:mm:ss} %highlight(%-5level) %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n"
+  level:
+    root: INFO
+    co.jp.studyjava: DEBUG
+    org.hibernate: ERROR
+

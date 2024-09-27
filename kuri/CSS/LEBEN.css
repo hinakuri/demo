@@ -1,0 +1,196 @@
+header{
+	display: block;
+	background-image: url(02.jpg);
+	background-repeat: no-repeat;
+	width: auto;
+	height: 600px;
+	
+	
+}
+#companynav{
+	position: fixed;
+	margin-top: 30px;
+	margin-left: 50px;
+	margin-right:50px;	
+  	animation: fadeIn 2s ease 1s 1 normal backwards;
+}
+ 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+ul.ddmenu{
+	margin: 0px;
+	padding: 0px 0px 0px 100px ;
+}
+ul.ddmenu li {
+	width: 200px;
+	display: inline-block;
+	list-style-type:none ;
+	position: relative;
+}
+
+ul.ddmenu a {
+	color: white;
+	line-height: 40px;
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+}
+ul.ddmenu a:hover{
+	background-color: darkslateblue;
+}
+ul.ddmenu ul {
+	display: none;
+	margin: 0px;
+	padding: 0px;
+	position: absolute;
+}
+ul.ddmenu li:hover ul {
+	display: block;
+}
+ul.ddmenu li:hover #contact {
+	color: darkgray;
+	background-color: transparent;
+}
+.ddmenu {
+	display:block ;
+	float: right;
+	margin-top: 10px;
+	
+}
+
+#leben {
+	height: 50px;
+	width: 200px;
+}
+.zigyo {
+	font-size: 30px;
+	color: darkblue;
+	text-align: center;
+	padding: 10px 10px 10px 10px;
+}
+.buisiness {
+	font-size: 20px;
+	color: darkblue;
+	text-align: center;
+	padding: 0px 10px 10px 10px;
+}
+.sub {
+	text-align: center;
+	padding-bottom: 10px;
+}
+.clearfix::after{
+	content: "";
+	display: block;
+	clear: both;
+}
+
+#picture {
+	text-align: center;
+}
+#sub {
+	text-align: center;
+}
+#companey{
+	background-color: #0886C0;
+}
+#buisiness1{
+	margin-left:0  auto
+}
+
+main {
+	margin-left: auto;
+}
+.tag{
+	background-color: #0886C0;
+}
+table{
+	margin-top: 20px;
+	margin-left: 130px;
+}
+th {
+	text-align: left;
+	padding-right: 100px;
+}
+td {
+	padding-right: 100px;
+	padding-top: 10px;
+}
+.news {
+	overflow-y: scroll;
+	height: 300px;
+	display: block;
+	width: 1000px;
+	margin:0 auto;
+}
+span {
+	color: blue;
+	padding-right: 20px;
+}
+div {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	}
+
+a {
+	text-decoration: none ;
+	color: black;
+}
+table a:hover {
+	color: darkgray;
+	text-decoration: underline ;
+}
+
+hr {
+	margin-top: 3px;
+	margin-bottom: 0px;
+}
+.polisy{
+	padding-top: 10px;
+	display: block;
+	width: 1000px;
+	margin:0 auto;
+	color: white;
+	
+}
+
+footer{
+	background-color: #304D78;
+}
+#scd {
+	display: inline-block;
+}
+#column{
+	display: inline-block;
+	float: right;
+}
+.link{
+	background-color: #CCE4F2;
+}
+.table{
+	display: block;
+	width: 1000px;
+	margin:0 auto;
+	padding-top: 10px;
+	padding-bottom: 40px;
+}
+
+a img:hover {
+  opacity: 0.7;
+}
+
+
+
+
+
+
+

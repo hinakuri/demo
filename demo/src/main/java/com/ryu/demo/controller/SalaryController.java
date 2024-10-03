@@ -3,8 +3,11 @@ package com.ryu.demo.controller;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,8 +92,11 @@ public class SalaryController {
 	    }
 	        
 	    @PostMapping(path="/salary/create")//与えられたURI表現式と一致するPOSTの要請を処理する
-	    private ResponseEntity<Void> createAccounts(@RequestBody SalaryCreateRequest request){
+	    private ResponseEntity<Void> createAccounts(@RequestBody SalaryCreateRequest request) throws ParseException{
 	        val salary = new Salary();
+	        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm");
+	        Date data = sdf.parse(request.getMonth()+ "-" + request.getDay());
+	        System.out.println(data);
 	        LocalDateTime nowDate = LocalDateTime.now(); 
 	        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm:ss"); 
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());

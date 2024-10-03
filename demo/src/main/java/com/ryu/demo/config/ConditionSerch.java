@@ -52,5 +52,23 @@ public class ConditionSerch {
 	        }
 	    };
 	}
+	@SuppressWarnings("deprecation")
+	public Specification<Salary> YearEqual(String year) {
+		return StringUtils.isEmpty(year) ? null : new Specification<Salary>() {
+			@Override
+			public Predicate toPredicate(Root<Salary> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				return criteriaBuilder.equal(root.get("year"), year);
+			}
+		};
+	}
+	@SuppressWarnings("deprecation")
+	public Specification<Salary> MonthEqual(String month,String monthA ) {
+		return StringUtils.isEmpty(month) ? null : new Specification<Salary>() {
+			@Override
+			public Predicate toPredicate(Root<Salary> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+				return criteriaBuilder.equal(root.get("month"), month);
+			}
+		};
+	}
 	
 }

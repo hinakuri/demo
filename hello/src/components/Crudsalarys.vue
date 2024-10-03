@@ -24,30 +24,33 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.month"
-                        label="年"
-                        :rules="[rules.required, rules.max_month]"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-container>
-                        <v-select :items="['01','02','03','04','05','06',
-                        '07','08','09','10','11','12']"
-                        label="月"
-                        v-model="editedItem.day"
-                        dense
-                        ></v-select>
-                      </v-container>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.employee_number"
-                        label="社員番号"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.month"
+                          label="年"
+                          @input="change"
+                          :rules="[rules.required, rules.max_month]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-container>
+                          <v-select :items="['01','02','03','04','05','06',
+                          '07','08','09','10','11','12']"
+                          label="月"
+                          v-model="editedItem.day"
+                          @input="change"
+                          dense
+                          ></v-select>
+                        </v-container>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="4">
+                        <v-text-field
+                          v-model="editedItem.employee_number"
+                          label="社員番号"
+                          @input="change"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-model="editedItem.unit_price"
@@ -248,6 +251,9 @@ export default {
       this.editedIndex = this.body.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+    },
+     change(item){
+      console.log(item.target.value)
     },
 
     deleteItem(item) {

@@ -41,7 +41,6 @@ public class Salary {
 	    @OneToOne
 	    @JoinColumn(name ="employee_number",insertable=false,updatable=false)
 	    private Account account; 
-	    
 	    @Column(name="working_days")
 	    private int workingdays;
 	    @Column(name="holiday")

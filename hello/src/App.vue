@@ -63,6 +63,23 @@
             </v-list>
           </v-expansion-panel-content>
         </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>契約単価</v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-list>
+              <v-list-item>
+                <!-- <v-btn text>契約単価一覧</v-btn> -->
+                <router-link to="/price" tag="button">契約単価一覧</router-link>
+                <!-- <router-link to="/User">単価</router-link> -->
+              </v-list-item>
+              <v-list-item>
+                <!-- <v-btn text>契約単価追加</v-btn> -->
+                <router-link to="/CrudPrice" tag="button">単価編集</router-link>
+                <!-- <router-link to="/User">契約</router-link> -->
+              </v-list-item>
+            </v-list>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
       </v-expansion-panels>
     </v-navigation-drawer>
     <v-main>

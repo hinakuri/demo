@@ -6,6 +6,8 @@ import CrudUser from './components/CrudUser';
 import CrudItem from './components/CrudItem';
 import Crudsalarys from './components/Crudsalarys';
 import salarys from './components/salarys';
+import price from './components/price';
+import CrudPrice from './components/CrudPrice';
 
 Vue.use(Router)
 
@@ -21,6 +23,11 @@ export default new Router({
       path: '/item',
       name: 'item',
       component: Item
+    },
+    {
+      path: '/price',
+      name: 'price',
+      component: price
     },
     {
       path: '/user',
@@ -41,6 +48,11 @@ export default new Router({
       path: '/crudsalarys',
       name: 'crudsalarys',
       component: Crudsalarys
+    },
+    {
+      path: '/crudPrice',
+      name: 'crudPrice',
+      component: CrudPrice
     },
     {
       path: '/cruditem',

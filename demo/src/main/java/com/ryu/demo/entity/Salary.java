@@ -1,5 +1,6 @@
 package com.ryu.demo.entity;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -30,7 +31,7 @@ public class Salary {
 	    private  UUID employeenumber;
 	 	@NotNull(message="月を入力してください。")
 	    @Column(name="month_day")
-	    private String monthday;
+	    private Date monthday;
 	    @Column(name="unit_price")
 	    private int unitprice;
 	    @NotNull(message="働いた時間を入力してください。")

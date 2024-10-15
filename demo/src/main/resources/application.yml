@@ -9,6 +9,7 @@ spring:
     password: "password"
     hikari:
       idle-timeout: 10000
+      
   jpa:
     show-sql: true
     hibernate:
@@ -25,6 +26,7 @@ spring:
     basename: i18n/messages, i18n/exceptionMessages
     cache-duration: -1
     encoding: UTF-8
+    
 
 # Server設定
 server:

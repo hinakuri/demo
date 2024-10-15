@@ -28,7 +28,7 @@
                         <v-text-field
                           v-model="editedItem.month"
                           label="年"
-                          @input="change"
+                          @blur="change"
                           :rules="[rules.required, rules.max_month]"
                         ></v-text-field>
                       </v-col>
@@ -38,7 +38,7 @@
                           '07','08','09','10','11','12']"
                           label="月"
                           v-model="editedItem.day"
-                          @input="change"
+                          @blur="change"
                           dense
                           ></v-select>
                         </v-container>
@@ -47,21 +47,23 @@
                         <v-text-field
                           v-model="editedItem.employee_number"
                           label="社員番号"
-                          @input="change"
+                          @blur="change"
                           :rules="[rules.required]"
                         ></v-text-field>
                       </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.unit_price"
+                        v-model.number="editedItem.unit_price"
                         label="時給"
-                        :rules="[rules.required, rules.min_salarys]"
+                        :prices="prices"
+                        disabled
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
-                        v-model="editedItem.work_time"
+                        v-model.number="editedItem.work_time"
                         label="時間"
+                        @blur="amount"
                         :rules="[rules.required, rules.max_time]"
                       ></v-text-field>
                     </v-col>
@@ -141,6 +143,7 @@
              <template >
                <v-btn width="110" color="primary" @click="serch"
                   >serch</v-btn>
+                <v-icon large color="blue" @click="download">mdi-download</v-icon>
               </template>
             </template>
         </v-toolbar>
@@ -181,6 +184,8 @@ export default {
     ],
     items: 
       [],
+    prices:
+      [],
     rules: {
        required : value => !!value || '文字を入力してください',
        max_month : value => value <= 2024 || '不正です',
@@ -201,6 +206,7 @@ export default {
       holiday: "", 
       month: "", 
       day: "", 
+      unit_price: "",
     },
     defaultItem: {
       month_day: "",
@@ -212,6 +218,7 @@ export default {
       holiday: "", 
       month: "",
       day: "",
+      unit_price: "",
     },
   }),
   mounted() {
@@ -252,8 +259,27 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-     change(item){
-      console.log(item.target.value)
+    change(){
+      if (this.editedItem.employee_number != 0 && this.editedItem.month != 0 && this.editedItem.day != 0){
+        console.log('すべての情報が入力されました:', this.editedItem.month, this.editedItem.day, this.editedItem.employee_number);
+         axios
+        .get("http://localhost:80/price/serch?month="+ this.editedItem.month +"&day="+this.editedItem.day + "&employee_number="+ this.editedItem.employee_number)
+        .then((response) => {(this.prices = response.data)
+          console.log('APIから取得したデータ:', response.data);
+        if (this.prices && this.prices.length > 0 && this.prices[0].unit_price !== undefined) {
+          this.editedItem.unit_price = this.prices[0].unit_price; 
+       } else {
+         console.log('unit_priceが取得できませんでした。');
+        }
+      })
+        .catch((error) => {console.log(error)
+      });
+      }
+    },
+    amount(){
+       if (this.editedItem.unit_price != 0 && this.editedItem.work_time != 0 ){
+         this.editedItem.amount_money = this.editedItem.unit_price * this.editedItem.work_time ;
+       }
     },
 
     deleteItem(item) {
@@ -299,7 +325,7 @@ export default {
       Object.assign(this.body[this.editedIndex], this.editedItem);
       this.close();
     },
-     serch() {
+    serch() {
       store.dispatch("salarys/serchsalary", {
         month: this.editedItem.month,
         day: this.editedItem.day,
@@ -307,6 +333,17 @@ export default {
       });
       Object.assign(this.editedItem.month,this.editedItem.day);
       this.close();
+    },
+     download() {
+      const tableData = this.body;
+       axios
+          .post("http://localhost:80/salary/exact", tableData)
+          .then(() => {
+            console.log('postsalary呼び出し')
+          })
+          .catch((respo) => {
+            console.log(respo);
+          });
     },
   },
 };

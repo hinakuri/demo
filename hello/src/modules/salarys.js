@@ -78,6 +78,18 @@ export default {
           console.log(respo);
         });
 
+    },
+    serchprice({commit},{month,day,employee_number}) {
+      axios
+        .get("http://localhost:80/price/serch?month="+ month +"&day="+day + "&employee_number="+ employee_number)
+        .then((response) => {
+          console.log('serchprice呼び出し')
+          commit('salarys', response.data)
+        })
+        .catch((respo) => {
+          console.log(respo);
+        });
+
     }
   },
 }

@@ -1,6 +1,8 @@
 package com.ryu.demo.request;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import lombok.Data;
@@ -14,5 +16,9 @@ public class PriceCreateRequest {
 	private Date end_date;
 	private int delete_flag;
 	private int id;
+	private Timestamp create_day;
+    private Time create_time;
+    private Timestamp update_day;
+    private Time update_time;
 	
 }

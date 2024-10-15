@@ -1,5 +1,6 @@
 package com.ryu.demo.response;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -13,7 +14,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class SalaryResponse {
-    private String month_day;
+	@JsonFormat(pattern = "yyyy-MM" ,timezone="Asia/Tokyo")
+    private Date month_day;
 	private String employee_name;
 	private UUID employee_number;
     private String unit_price;

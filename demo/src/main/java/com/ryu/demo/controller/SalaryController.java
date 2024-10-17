@@ -1,8 +1,14 @@
 package com.ryu.demo.controller;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -12,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +36,7 @@ import com.ryu.demo.entity.Salary;
 import com.ryu.demo.repository.SalaryRepository;
 import com.ryu.demo.request.SalaryCreateRequest;
 import com.ryu.demo.request.SalaryDeleteRequest;
+import com.ryu.demo.request.SalaryFile;
 import com.ryu.demo.request.SalarySerchRequest;
 import com.ryu.demo.response.SalaryResponse;
 
@@ -142,47 +150,110 @@ public class SalaryController {
 	    }
 	    @PostMapping("/salary/exact")
 	    public void createRecords(@RequestBody List<JsonExact> records) {
-	    LocalDateTime nowDate = LocalDateTime.now();
-	    DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyyMMddHHmmss"); 
-	    String time = (dtf1.format(nowDate)).toString();
-	    String file = "\\Users\\h_kur\\Downloads\\salarys_" + time + ".csv";
-	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))){ 
-			for(var record : records) {
-				String unitPrice;
-				String AmountMoney ;
+	    	LocalDateTime nowDate = LocalDateTime.now();
+	    	DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyyMMddHHmmss"); 
+	    	String time = (dtf1.format(nowDate)).toString();
+	    	String file = "\\Users\\h_kur\\Downloads\\salarys_" + time + ".csv";
+	    	try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))){ 
+	    		writer.write("\"年月\",\"名前\",\"社員番号\",\"時給\",\"時間\",\"金額\",\"稼働日数\",\"休暇\",\"作成日\""
+	    				+ ",\"作成時間\",\"更新日\",\"更新時間\"");
+	    		writer.newLine();
+	    		for(var record : records) {
+	    			String unitPrice;
+	    			String AmountMoney ;
+	    			
+	    			if (record.getUnitPrice().contains(",")) {
+	    				unitPrice = record.getUnitPrice().replace(",","");
+	    			}else {
+	    				unitPrice = record.getUnitPrice();
+	    			}
+	    			if (record.getAmountMoney().contains(",")) {	
+	    				AmountMoney = record.getAmountMoney().replace(",","");
+	    			}else {
+	    				AmountMoney = record.getAmountMoney();
+	    			}
+	    			if (record.getUpdateDay()== null) {
+	    				record.setUpdateDay("");
+	    				record.setUpdateTime("");
+	    			}
+	    			writer.write(String.join(",",
+	    					"\"" + record.getMonthDay() + "\"",
+	    					"\"" + record.getEmployeeName() + "\"",
+	    					"\"" + record.getEmployeeNumber() + "\"",
+	    					unitPrice,
+	    					String.valueOf(record.getWorkTime()),
+	    					AmountMoney,
+	    					String.valueOf(record.getWorkingDays()),
+	    					String.valueOf(record.getHoliday()),
+	    					record.getCreateDay(),
+	    					record.getCreateTime(),
+	    					record.getUpdateDay(),
+	    					record.getUpdateTime()
+	    					));
+	    			writer.newLine();
+	    		}
+	    	} catch (IOException e) {			
+	    		e.printStackTrace();
+	    	}  
+	    	System.out.println("ok");
+	    } 
+	    @PostMapping("/salary/read")
+	    public ResponseEntity<Void> readRecords(@RequestBody SalaryFile params) throws IOException {
+	    	String filepuss = params.getFilepuss();
+	    	System.out.println(filepuss);
+	    	try {
+	    		LocalDateTime nowDate = LocalDateTime.now(); 
+	 	        DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("HH:mm:ss");
+	 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	    		File file = new File("\\Users\\h_kur\\Downloads\\" + filepuss);
+				FileInputStream input = new FileInputStream(file);
+				InputStreamReader stream = new InputStreamReader(input,"UTF-8");
+				BufferedReader buffer = new BufferedReader(stream);
 				
-				if (record.getUnitPrice().contains(",")) {
-					unitPrice = record.getUnitPrice().replace(",","");
-				}else {
-					unitPrice = record.getUnitPrice();
+				String line ;
+				 boolean isFirstLine = true;
+				 
+				while ((line = buffer.readLine()) != null) {
+					 if (isFirstLine) {
+			                isFirstLine = false;
+			                continue; 
+			            }
+					line = line.replaceAll("\"","");
+					String[] columns = line.split(",",-1);
+					Salary salary = new Salary();
+					for (int j = 0; j < columns.length; j++) {
+						salary.setMonthday(Date.valueOf(columns[0] + "-01"));
+						salary.setEmployeenumber(UUID.fromString(columns[2]));
+						salary.setUnitprice(Integer.parseInt(columns[3]));
+						salary.setWorktime(Double.parseDouble(columns[4]));
+						salary.setAmountmoney(Integer.parseInt(columns[5]));
+						salary.setWorkingdays(Integer.parseInt(columns[6]));
+						salary.setHoliday(Integer.parseInt(columns[7]));
+						salary.setUpdate_day(columns[10].equals("") ? columns[8].equals("")? 
+								null:timestamp: Timestamp.valueOf(columns[10] + " 00:00:00"));
+						salary.setUpdate_time(columns[11].equals("") ?columns[9].equals("")?
+								null:Time.valueOf(dtf1.format(nowDate)):Time.valueOf(columns[11]));
+						salary.setCreate_day(columns[8].equals("")? timestamp :
+								Timestamp.valueOf(columns[8] + " 00:00:00"));
+						salary.setCreate_time(columns[9].equals("")? Time.valueOf(dtf1.format(nowDate)):
+								Time.valueOf(columns[9]));
+					}
+					salaryRepository.saveAndFlush(salary);
 				}
-				if (record.getAmountMoney().contains(",")) {	
-					AmountMoney = record.getAmountMoney().replace(",","");
-				}else {
-					AmountMoney = record.getAmountMoney();
-				}
-				writer.write(String.join(",",
-	                    "年月 :" + record.getMonthDay(),
-	                    "社員名 :" + record.getEmployeeName(),
-	                    "社員番号 :" + record.getEmployeeNumber(),
-	                    "時給 :" + unitPrice,
-	                    "時間 :" + String.valueOf(record.getWorkTime()),
-	                    "金額 :" + AmountMoney,
-	                    "稼働時間 :" + String.valueOf(record.getWorkingDays()),
-	                    "休暇 :" + String.valueOf(record.getHoliday()),
-	                    "作成日 :" + record.getCreateDay(),
-	                    "作成時間 :" + record.getCreateTime(),
-	                    "更新日 :" + record.getCreateDay(),
-	                    "更新時間 :" + record.getUpdateDay()
-	                ));
-	                writer.newLine();
+											
+				input.close();
+				stream.close();
+				buffer.close();
+					
+					
+	    	} catch (FileNotFoundException | UnsupportedEncodingException e) {
+	    		
+	    		e.printStackTrace();
 			}
-		} catch (IOException e) {			
-			e.printStackTrace();
-		}  
-	    System.out.println("ok");
-	    }
-	    
-}
+	    	
+	    	
+	    	return ResponseEntity.noContent().build();
+	    }   
+}	
 	    
 	   

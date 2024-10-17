@@ -28,6 +28,18 @@ export default {
           console.log(respo);
         });
     },
+    importdata({commit},{filename}) {
+      axios
+        .post("http://localhost:80/salary/read",{filepuss: filename})
+        .then(() => {
+          console.log('file名',filename)
+          console.log('importdata呼び出し')
+          commit('salarys', filename)
+        })
+        .catch((respo) => {
+          console.log(respo);
+        });
+    },
     postsalary({ commit }, { index, salary }) {
       if (index > -1) {
         console.log('creatsalary呼び出し')

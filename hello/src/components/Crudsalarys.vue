@@ -144,6 +144,9 @@
                <v-btn width="110" color="primary" @click="serch"
                   >serch</v-btn>
                 <v-icon large color="blue" @click="download">mdi-download</v-icon>
+                <input style="display: none" ref="input" type="file" accept="image/csv" model = "files"
+                 @change="selectedFile()">
+                <v-icon large color="blue" @click="btnclick">mdi-import</v-icon>
               </template>
             </template>
         </v-toolbar>
@@ -250,6 +253,19 @@ export default {
   },
 
   methods: {
+    btnclick() {
+      this.$refs.input.click();
+    },
+    async selectedFile() {
+      this.isUploading = true;
+      const file = this.$refs.input.files[0]
+      if (!file) {
+        return;
+      }
+      this.fileName = file.name;
+      console.log("選択されたファイル名：", this.fileName);
+      store.dispatch("salarys/importdata",{filename : this.fileName});
+    },
     initialize() {
       store.dispatch("salarys/initsalary");
     },
@@ -336,6 +352,7 @@ export default {
     },
      download() {
       const tableData = this.body;
+      console.log(tableData);
        axios
           .post("http://localhost:80/salary/exact", tableData)
           .then(() => {

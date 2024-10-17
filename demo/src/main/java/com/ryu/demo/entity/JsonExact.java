@@ -30,7 +30,7 @@ public class JsonExact {
 	private int holiday;
 	@JsonProperty("create_time")
 	private String createTime;
-	@JsonProperty("updateTime")
+	@JsonProperty("update_time")
 	private String updateTime;
 	@JsonProperty("create_day")
 	private String createDay;

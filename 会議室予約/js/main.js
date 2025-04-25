@@ -7,59 +7,6 @@ var countTime = 0;
 
 
 countTime = new Date(2024,0,1,0,0);
-for(var i=0;i<49;i++){
-  //テーブルの行を作成する
-  var tr = document.createElement('tr');
-  for(var j=0;j<2;j++){
-      var td = document.createElement('td');
-      //tr要素の末尾にtd要素を追加する
-      if(j == 0){
-          td.style.width = '100px';
-          td.style.borderBottom ='hidden';
-          td.setAttribute('id','first-block');
-          td.style.borderRight = 'solid 3px black';
-          td.style.borderBottom = 'solid 1px black';
-          td.innerHTML = countTime.getHours().toString().padStart(2,'0') + ':' +
-                         countTime.getMinutes().toString().padStart(2,'0');
-      }else {
-          td.style.minWidth =  '1000px';
-          td.style.height = '50px';
-          td.style.borderBottom ='solid 1px black';
-      }
-      tr.appendChild(td)
-  }
-  
-  //テーブルの要素の末尾にtr要素を追加する
-  countTime.setMinutes(countTime.getMinutes() + 30);
-  once30TabeleFile .appendChild(tr);
-}
-countTime = new Date(2024,0,1,0,0);
-for(var i=0;i<144;i++){
-  //テーブルの行を作成する
-  var tr = document.createElement('tr');
-  for(var j=0;j<2;j++){
-      var td = document.createElement('td');
-      //tr要素の末尾にtd要素を追加する
-      if(j == 0){
-          td.style.width = '100px';
-          td.style.borderBottom ='hidden';
-          td.setAttribute('class','first-block');
-          td.style.borderRight = 'solid 3px black';
-          td.style.borderBottom = 'solid 1px black';
-          td.innerHTML = countTime.getHours().toString().padStart(2,'0') + ':' +
-                         countTime.getMinutes().toString().padStart(2,'0');
-      }else {
-          td.style.minWidth =  '1000px';
-          td.style.height = '20px';
-          td.style.borderBottom ='solid 1px black';
-      }
-      tr.appendChild(td)
-  }
-  
-  //テーブルの要素の末尾にtr要素を追加する
-  countTime.setMinutes(countTime.getMinutes() + 10);
-  once10TabeleFile .appendChild(tr);
-}
 
  function toggleDay(){
   const thirtyMinits = document.getElementById("thirty-minits");
@@ -92,6 +39,14 @@ for(var i=0;i<144;i++){
         // モーダルを表示
         openButton.addEventListener("click", function () {
             modal.style.display = "block";
+            const deletebutton = document.getElementById("deletebutton");
+            if (!deletebutton.classList.contains("disp-none")){
+              deletebutton.classList.add("disp-none")
+              const buttons = document.querySelectorAll(".margin-r1");
+              buttons.forEach(btn => {
+                btn.style.margin = "0 80px";
+              })
+            }
         });
     
         // モーダルを非表示
@@ -106,31 +61,7 @@ for(var i=0;i<144;i++){
             }
         });
     });
-      function changeRepeatUnit(){
-
-        const daily = document.getElementById('daily');
-        const weekly = document.getElementById('weekly');
-        const monthly = document.getElementById('monthly')
-        const dairyoptions = document.getElementById('dairy-options');
-        const weeklyoptions = document.getElementById('weekly-options');
-        const monthlyoptions = document.getElementById('monthly-options');
-
-        if (daily.checked) {
-          dairyoptions.style.display = 'block';
-        } else {
-          dairyoptions.style.display = 'none';
-        }
-        if (weekly.checked) {
-          weeklyoptions.style.display ='block';
-        } else{
-          weeklyoptions.style.display = 'none';
-        }
-        if (monthly.checked) {
-          monthlyoptions.style.display ='block';
-        } else{
-          monthlyoptions.style.display = 'none';
-        }
-      }
+      
 
       function changeoutputTable(){
         const tenMinits = document.getElementById("ten-minits");

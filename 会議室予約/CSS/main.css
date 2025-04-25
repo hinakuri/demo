@@ -4,6 +4,9 @@ html,body{
       display: flex;
       justify-content: center; /* 水平方向の中央寄せ */
       align-items: center; /* 垂直方向の中央寄せ */
+      font-family: "メイリオ" ;
+
+        
 }
 main{
   height: 90%;
@@ -35,6 +38,9 @@ main{
   flex-direction: column; /* 縦に並べる */
   align-items: center; /* 中央に揃える */
   width: 100%;
+}
+.disp-flex{
+  display: flex;
 }
 #tables-container {
   display: flex;
@@ -92,7 +98,7 @@ th,#table-hedder td {
 }
 .dayTitle{
   width: 100px;
-  border-right: 3px solid black;
+  border-right: 1px solid black;
 }
 #onday-table-box{
   margin-left: 17px;
@@ -218,11 +224,26 @@ th,#table-hedder td {
   .w-30{
     width: 39px !important;
   }
+  .w-9{
+    width: 9px !important;
+    border:1px solid black;
+  }
   .w-70{
     width: 70px;
   }
+  .w-71{
+    width: 78px;
+    border:1px solid black;
+  }
   .w-100{
     width: 100px;
+  }
+  .registration{
+    width: 150px; 
+    height: 50px;
+    font-size:20px ;
+    border: 1.5px solid black;
+    border-radius: 10px;
   }
   .w-140{
     width: 145px !important;
@@ -242,6 +263,9 @@ th,#table-hedder td {
   .w-5{
     width: 40%;
   }
+  .ml-10 {
+    margin-left: 5%;
+  }
   .space{
     justify-content: space-between;
   }
@@ -253,11 +277,17 @@ th,#table-hedder td {
   .margin-r1{
     margin: 0 80px;
   }
+  .margin-r2{
+    margin: 0 50px;
+  }
   .w-1{
     width: 10%;
   }
   .mr-3{
     margin-right: 3px;
+  }
+  .mr-5{
+    margin-right: 5px;
   }
   .ml-1{
     margin-left:28px
@@ -281,7 +311,7 @@ th,#table-hedder td {
     margin-left: 60px;
   }
   .ml-7{
-    margin-left: 48.3%;
+    margin-left: 47.5%;
   }
   .mt-20{
     margin-top: 20px;
@@ -308,22 +338,35 @@ th,#table-hedder td {
     display: none;
   }
   .reservation-start {
-    border-bottom: 1px solid black !important;
-    background-color: aquamarine;
+    margin-top: 1px;
+    border-top: 1px solid black !important;
+    border-right: 1px solid black;
+    border-left : 1px solid black;
+    background-color: 		#D6F1FF;
     border-bottom: none !important;
+    border-radius: 10px 10px 0px 0px;
+    margin-left: 2px;
   }
   
   /* 予約の終了セル（下ボーダーあり、上なし） */
   .reservation-end {
     border-bottom: 1px solid black !important;
-    background-color: aquamarine;
+    border-right: 1px solid black;
+    border-left : 1px solid black;
+    background-color: 		#D6F1FF;
     border-top: none !important;
+    border-radius: 0px 0px 10px 10px;
+    margin-left: 2px;
+    margin-bottom: 1px;
   }
   
   /* 予約の間のセル（上下ボーダーなし） */
   .reservation-middle {
     border-top: none !important;
-    background-color: aquamarine;
+    border-right: 1px solid black;
+    border-left : 1px solid black;
+    background-color: 		#D6F1FF;
     border-bottom: none !important;
+    margin-left: 2px;
   }
   

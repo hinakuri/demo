@@ -30,7 +30,7 @@
                       </div>
                     </th>
                     <th style="text-align: right; width: 180px;">
-                        <button id="modelOpen" type="button" class= "registration">新規登録</button>
+                        <button id="modelOpen" type="button" class= "registration" @click="openModal">新規登録</button>
                     </th>
                 </tr>
             </table>
@@ -186,16 +186,17 @@
             </div>
           </div>
         </div>
-        <div id="easyModal" class="modal">
+        <div id="easyModal" class="modal" @click.self="closeModal">
           <div class="modal-content">
             <h4 class="padding-1 margin-t1 margin-b1">予約フォーム</h4>
             <div class="Reservation-details">
+              <form id="reservation">
               <div class="reservation-name flex items-center">
                 <div class="title padding-1 w-2">
-                  <span>予約名</span>
+                  <span>予約名</span><span class="ast">*</span>
                 </div>
                 <div class="reservation-content padding-1 w-8">
-                  <input type="text" class="w-34 h1" placeholder="予約名" v-model="reservation_detail.reservationName">
+                  <input type="text" class="w-34 h1" placeholder="予約名" v-model="reservation_detail.reservationName" required>
                 </div>
               </div>
               <div class="reservation-name flex items-center">
@@ -210,11 +211,11 @@
               </div>
               <div class="reservation-name flex items-center">
                 <div class="title padding-1 w-2">
-                  <span>開始時刻</span>
+                  <span>開始時刻</span><span class="ast">*</span>
                 </div>
                 <div class="reservation-content padding-1 w-8">
                   <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2" v-model="reservation_detail.startDay"/>
-                  <select name="select-hour" class="w-100 h1 ml-10"v-model="reservation_detail.startHour">
+                  <select name="select-hour" class="w-100 h1 ml-10"v-model="reservation_detail.startHour" required>
                     <option value="01">01</option>
                     <option value="02">02</option>
                     <option value="03">03</option>
@@ -240,7 +241,7 @@
                     <option value="23">23</option>
                     <option value="24">24</option>
                   </select>
-                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.startMinute">
+                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.startMinute" required>
                     <option value="00">00</option>
                     <option value="15">15</option>
                     <option value="30">30</option>
@@ -250,7 +251,7 @@
               </div>
               <div class="reservation-name flex items-center">
                 <div class="title padding-1 w-2">
-                  <span>終了時刻</span>
+                  <span>終了時刻</span><span class="ast">*</span>
                 </div>
                 <div class="reservation-content padding-1 w-8">
                   <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2"v-model="reservation_detail.endDay" />
@@ -350,15 +351,15 @@
                       </select>
                     </div>
                     <div class="ml-5  padding-1">
-                      <input type="radio" name="repeat_unit" id="daily" v-model="daily.allday"> すべての平日</label>
+                      <input type="radio" value = "すべての平日" name="repeat_unit" id="daily" v-model="daily.allday"> すべての平日</label>
                     </div>     
                   </div>
                   <div class="repeat-settings padding-1">
                     <label>開始日<input type="date" v-model="daily.startDate" class="ml-2"></label>
-                    <label><input type="radio" name="endType" value="endDate" class="ml-1"v-model="daily.endType">終了日<input type="date" v-model="daily.endDate" class="ml-5"></label>
+                    <label><input type="radio" name="endType" value="終了日" class="ml-1"v-model="daily.endType">終了日<input type="date" v-model="daily.endDate" class="ml-5"></label>
                     <br>
                     <label class="ml-7">
-                      <input type="radio" name="endType" value="repeatCount" class="mt-20" v-model="daily.endType">反復回数
+                      <input type="radio" name="endType" value="反復回数" class="mt-20" v-model="daily.endType">反復回数
                       <select name="select-hour" class="mt-20 ml-5" v-model="daily.repeatCount">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -397,23 +398,23 @@
                     </div>     
                   </div>
                   <div class="repeat-settings padding-1">
-                    <label>開始日<input type="date" value="" class="ml-2"></label>
-                    <label><input type="radio" name="endType" value="" class="ml-1">終了日<input type="date" value="" class="ml-5"></label>
+                    <label>開始日<input type="date" v-model="weekly.startDate" class="ml-2"></label>
+                    <label><input type="radio" name="endType" value="終了日" v-model="weekly.endType" class="ml-1">終了日<input type="date" class="ml-5" v-model="weekly.endDate"></label>
                     <br>
                     <label class="ml-7">
-                      <input type="radio" name="endType" value="" class="mt-20">反復回数
-                      <select name="select-hour" class="mt-20 ml-5">
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                        <option value="">4</option>
-                        <option value="">5</option>
-                        <option value="">6</option>
+                      <input type="radio" name="endType" value="反復回数" v-model="weekly.endType" class="mt-20">反復回数
+                      <select name="select-hour" class="mt-20 ml-5" v-model="weekly.repeatCount">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
                       </select>
                     </label>
                     <br>
                     <label class="ml-7">
-                      <input type="radio" name="endType" value="">未定
+                      <input type="radio" name="endType" value="未定" v-model="weekly.endType">未定
                     </label>
                   </div>
                 </div>
@@ -423,80 +424,80 @@
                       <label>パターン</label>
                     </div>
                     <div class="w-100  padding-1">
-                      <select class="w-100">
-                        <option>か月ごと</option>
+                      <select class="w-100" v-model="monthly.repeatMonth">
+                        <option value ="週ごと">か月ごと</option>
                       </select>
                     </div>
                     <div class="ml-15  padding-1">
-                      <input type="radio" name="patern">
+                      <input type="radio" name="patern" v-model="monthly.repeat">
                       <label>
-                        <select class="w-100">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                          <option>8</option>
-                          <option>9</option>
-                          <option>10</option>
-                          <option>11</option>
-                          <option>12</option>
-                          <option>13</option>
-                          <option>14</option>
-                          <option>15</option>
-                          <option>16</option>
-                          <option>17</option>
-                          <option>18</option>
-                          <option>19</option>
-                          <option>20</option>
+                        <select class="w-100" v-model="monthly.day">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
                         </select>
                         日
                       </label>
                     </div><br>
                     <div class="flex ml-40 padding-1">
-                      <input type="radio" name="patern">
+                      <input type="radio" name="patern" value="monthly.repeat">
                       <label>
-                        <select class="w-60">
-                          <option>第1</option>
-                          <option>第2</option>
-                          <option>第3</option>
-                          <option>第4</option>
-                          <option>第5</option>
+                        <select class="w-60" v-model="monthly.selectnumber">
+                          <option value ="第1">第1</option>
+                          <option value ="第2">第2</option>
+                          <option value ="第3">第3</option>
+                          <option value ="第4">第4</option>
+                          <option value ="第5">第5</option>
                         </select>
                       </label>
                       <label class="ml-10">
-                        <select class="w-70 ml-1">
-                          <option>月曜日</option>
-                          <option>火曜日</option>
-                          <option>水曜日</option>
-                          <option>木曜日</option>
-                          <option>金曜日</option>
-                          <option>土曜日</option>
-                          <option>日曜日</option>
+                        <select class="w-70 ml-1" v-model="monthly.selectdate">
+                          <option value="月曜日">月曜日</option>
+                          <option value="火曜日">火曜日</option>
+                          <option value="水曜日">水曜日</option>
+                          <option value="木曜日">木曜日</option>
+                          <option value="金曜日">金曜日</option>
+                          <option value="土曜日">土曜日</option>
+                          <option value="日曜日">日曜日</option>
                         </select>
                       </label>
                     </div>     
                   </div>
                   <div class="repeat-settings padding-1">
-                    <label>開始日<input type="date" value="" class="ml-2"></label>
-                    <label><input type="radio" name="endType" value="" class="ml-1">終了日<input type="date" value="" class="ml-5"></label>
+                    <label>開始日<input type="date" class="ml-2" v-model="monthly.startDate"></label>
+                    <label><input type="radio" name="endType" value="終了日" v-model="monthly.endType" class="ml-1">終了日<input type="date" v-model="monthly.endDate" class="ml-5"></label>
                     <br>
                     <label class="ml-7">
-                      <input type="radio" name="endType" value="" class="mt-20">反復回数
-                      <select name="select-hour" class="mt-20 ml-5">
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                        <option value="">4</option>
-                        <option value="">5</option>
-                        <option value="">6</option>
+                      <input type="radio" name="endType" value="反復回数" class="mt-20" v-model="monthly.endType">反復回数
+                      <select name="select-hour" class="mt-20 ml-5" v-model="monthly.repeatCount">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
                       </select>
                     </label>
                     <br>
                     <label class="ml-7">
-                      <input type="radio" name="endType" value="">未定
+                      <input type="radio" name="endType" value="未定" v-model="monthly.endType">未定
                     </label>
                   </div>
                 </div>
@@ -504,9 +505,10 @@
               <div class="flex items-center padding-1 space w-full">
                 <button type="button" class="button margin-r1" @click="reservationRegistration()">登録</button>
                 <button type="button" id ="deletebutton" class="button margin-r1 disp-none" @click="deletereservation()">予約削除</button>
-                <button type="button" class="button margin-r1">キャンセル</button>
+                <button type="button" class="button margin-r1" @click="closeModal()">キャンセル</button>
               </div>
-              </div>
+            </form>
+            </div>
           </div>
         </div>
   </main> 

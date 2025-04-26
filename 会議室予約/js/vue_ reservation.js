@@ -26,6 +26,8 @@ var app = Vue.createApp({
         { "id": 4,reservation_id: 202504302400, name: "予約3",create_by: "山田太郎", date: "20250430", starttime: "14:00", endtime: "15:00" }
       ],
       daily:{repeatDay:"",allday:"",endType:"",startDate:"",endDate:"",},
+      weekly:{repeatWeek:"",dayofweek:"",startDate:"",endType:"",repeatCount:"",},
+      monthly:{repeatMonth:"",repeat:"",day:"",selectnumber:"",selectdate:"",startDate:"",endType:"",repeatCount:""},
       reservation_detail:{reservationName:"",reservationArea:"",startDay:"",startHour:"",startMinute:"",endDay:"",endHour:"",endMinute:"",puropose:"",attendee:"",note:""},
       getreservation_detail:{name: "予約1",create_by: "山田太郎",email: "yamada@kl.co.jp", place: "会議室",start_time: "10:30:00",end_time: "12:00:00",puropose: "月次報告",attendee: ["山田太郎", "田中正"],note: "表彰あり"
     }
@@ -66,39 +68,52 @@ var app = Vue.createApp({
     
     reservationRegistration: async  function() {
 
-    let startTime = this.reservation_detail.startHour +":"+ this.reservation_detail.startMinute;
-    let endTime = this.reservation_detail.endHour +":"+ this.reservation_detail.endMinute;
+      const form = document.getElementById("reservation"); 
 
-    let body = {
-      date: this.reservation_detail.startDay,
-      name: this.reservation_detail.reservationName,
-      startTime: startTime,
-      endTime: endTime,
-      place: this.reservation_detail.reservationArea,
-      puropose: this.reservation_detail.puropose,
-      attendee: this.reservation_detail.puropose,
-    }
-    console.log(body); 
-    path = "schedules"
-    try {
-      // await this.executePost(path, body); 
-      // const response = await this.executeGet(path); 
-      // this.schedule = response.schedule;
-      this.schedule =  [
-        { "id": 1,reservation_id: 202504271000, name: "予約1",create_by: "山田太郎", date: "20250427", starttime: "10:00", endtime: "11:00" },
-        { "id": 2,reservation_id: 202504271000, name: "予約4",create_by: "山田太郎", date: "20250427", starttime: "10:00", endtime: "11:00" },
-        { "id": 3,reservation_id: 202504271100, name: "予約2",create_by: "山田太郎", date: "20250427", starttime: "11:00", endtime: "13:30" },
-        { "id": 4,reservation_id: 202504302400, name: "予約3",create_by: "山田太郎", date: "20250430", starttime: "14:00", endtime: "15:00" },
-        { "id": 5,reservation_id: 202504270800, name: "予約3",create_by: "山田太郎", date: "20250427", starttime: "08:00", endtime: "09:00" }
-      ]
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      let startTime = this.reservation_detail.startHour +":"+ this.reservation_detail.startMinute;
+      let endTime = this.reservation_detail.endHour +":"+ this.reservation_detail.endMinute;
 
-    } catch (error) {
-      console.error("更新中にエラー:", error);
-    }
+      let body = {
+        date: this.reservation_detail.startDay,
+        name: this.reservation_detail.reservationName,
+        startTime: startTime,
+        endTime: endTime,
+        place: this.reservation_detail.reservationArea,
+        puropose: this.reservation_detail.puropose,
+        attendee: this.reservation_detail.puropose,
+      }
+      console.log(body); 
+      path = "schedules"
+      try {
+        // await this.executePost(path, body); 
+        // const response = await this.executeGet(path); 
+        // this.schedule = response.schedule;
+        this.schedule =  [
+          { "id": 1,reservation_id: 202504271000, name: "予約1",create_by: "山田太郎", date: "20250427", starttime: "10:00", endtime: "11:00" },
+          { "id": 2,reservation_id: 202504271000, name: "予約4",create_by: "山田太郎", date: "20250427", starttime: "10:00", endtime: "11:00" },
+          { "id": 3,reservation_id: 202504271100, name: "予約2",create_by: "山田太郎", date: "20250427", starttime: "11:00", endtime: "13:30" },
+          { "id": 4,reservation_id: 202504302400, name: "予約3",create_by: "山田太郎", date: "20250430", starttime: "14:00", endtime: "15:00" },
+          { "id": 5,reservation_id: 202504270800, name: "予約3",create_by: "山田太郎", date: "20250427", starttime: "08:00", endtime: "09:00" }
+        ]
 
-    const modal = document.getElementById("easyModal");
-    modal.style.display = "none";
-    this.reservation_detail = {};
+      } catch (error) {
+        console.error("更新中にエラー:", error);
+      }
+      if (daily.checked){
+        console.log(this.daily);
+      }else if (weekly.checked){
+        console.log(this.weekly);
+      }else if (monthly.checked){
+        console.log(this.monthly);
+      }
+
+      const modal = document.getElementById("easyModal");
+      modal.style.display = "none";
+      this.reservation_detail = {};
 
   },
 
@@ -181,6 +196,9 @@ executeGet: function(path){
       }
     },
     handleReservationClick(reservation) {
+      const daily = document.getElementById('daily');
+      const weekly = document.getElementById('weekly');
+      const monthly = document.getElementById('monthly')
 
       // let body = {
       //   id: reservation.id
@@ -509,12 +527,26 @@ executeGet: function(path){
 
     // モーダルを開く
     openModal() {
+      this.reservation_detail={reservationName:"",reservationArea:"",startDay:"",startHour:"",startMinute:"",endDay:"",endHour:"",endMinute:"",puropose:"",attendee:"",note:""}
+      const modal = document.getElementById('easyModal');
       this.isModalOpen = true;
+
+      modal.style.display = "block";
+      const deletebutton = document.getElementById("deletebutton");
+      if (!deletebutton.classList.contains("disp-none")){
+        deletebutton.classList.add("disp-none")
+        const buttons = document.querySelectorAll(".margin-r1");
+        buttons.forEach(btn => {
+          btn.style.margin = "0 80px";
+        })
+      }
     },
 
     // モーダルを閉じる
     closeModal() {
+      const modal = document.getElementById('easyModal');
       this.isModalOpen = false;
+      modal.style.display = "none";
     },
 
     // 予約を登録

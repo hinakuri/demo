@@ -313,6 +313,9 @@ th,#table-hedder td {
   .ml-7{
     margin-left: 47.5%;
   }
+  .ast{
+    color: red;
+  }
   .mt-20{
     margin-top: 20px;
   }

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../CSS/main.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+    <main id="app">
+      <div class="header">
+        <div class="ml-5" @click="resetWindow"><img src="../CSS/Logo_yoyakukun.jpg" class="imgstyle"></div>
+        <div class="company ml-5">株式会社 レーベン</div>
+        <div class="option">
+          <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#D9D9D9"  class="mr-10 color-gray"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#FFFFFF" class="mr-10 color-white"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+        </div>
+      </div>
+        <div class="disp">
+            <table style="width: 1100px;">
+                <tr>
+                    <th style="text-align: left;">
+                      <a href="#" @click.prevent="prevWeek" style="text-decoration: none; color: black;">&lt;</a>
+                      <span id="outputDate">
+                        {{ isDailyView ? selectedDate : formattedWeekRange }}
+                      </span>
+                      <a href="#" @click.prevent="nextWeek" style="text-decoration: none; color: black;">&gt;</a>
+                    </th>
+                    <th class="flex ml-13 he-20 w-25 disp-none" id="switching-unit">
+                      <div class="flex items-center">
+                        <p>表示単位:</p>
+                          <label class="ml-1"><input type="radio" name="outTable" id="ten-minits" @click="changeoutputTable()"> 10分</label>
+                          <label class="ml-1"><input type="radio" name="outTable" id="thirty-minits" @click="changeoutputTable()">30分</label>
+                      </div>
+                    </th>
+                    <th style="text-align: right; width: 180px;">
+                      <svg id="modelOpen" @click="openModal" xmlns="http://www.w3.org/2000/svg" width="180px" height="45px" viewBox="0 0 102 43" fill="#A7C4E5"><rect x="1" y="1" width="100" height="41" rx="20" ry="20" fill="white" stroke="#1D5D99" stroke-width="2"/><line x1="51" y1="15" x2="51" y2="28" stroke="#1D5D99" stroke-width="4"/><line x1="44" y1="21.5" x2="58" y2="21.5" stroke="#1D5D99" stroke-width="4"/></svg>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <div id="table-wrapper">
+          <div class="weekly-table">
+            <div class="table-box scroll" style="margin-left: 17px;">
+              <table id="table-hedder">
+                <tr id="outputWeek">
+                  <th class="disp-hidden"></th>
+                  <th class="weekdays">月</th>
+                  <th class="weekdays">火</th>
+                  <th class="weekdays">水</th>
+                  <th class="weekdays">木</th>
+                  <th class="weekdays">金</th>
+                  <th style="background-color: #6f6ff8;">土</th>
+                  <th style="background-color: #FCE4D6;">日</th>
+                </tr>
+                <tr id="outputDay" style="background-color: beige;">
+                  <td class="disp-hidden"></td>
+                  <td v-for="(day, index) in weekDays" :key="index" @click="toggleDay(day)">
+                    {{ day }}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div id="outputTable" class="table-box">
+              <table id="table-id">
+                <tbody>
+                  <tr v-for="rowIndex in totalRows" :key="'row-' + rowIndex"> 
+                    <td class="w-30">{{ getTimeLabel(rowIndex) }}</td>
+                    <td v-for="colIndex in 7":key="'cell-' + rowIndex + '-' + colIndex":class="{highlighted: highlightedCells.has(generateCellId(rowIndex, colIndex)) }":style="getCellStyle(rowIndex, colIndex)">
+                      <div class="disp-flex">
+                        <div
+                          v-for="(reservation, overlapIndex) in getReservation(generateCellId(rowIndex, colIndex))"
+                          :key="'res-' + rowIndex + '-' + colIndex + '-' + overlapIndex"
+                          class="reservation-box"
+                          :class="getCellClass(rowIndex, colIndex, overlapIndex)"
+                          @click="handleReservationClick(reservation)"
+                          :style="getReservationCellStyle(rowIndex, colIndex, overlapIndex)">
+                          <span v-if="getCellClass(rowIndex, colIndex, overlapIndex) === 'reservation-start'">
+                            {{reservation.name}}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>                
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="day-table">
+            <div class="table-box scroll" id="onday-table-box">
+              <table class="table-title">
+                <tr id="outputTitle">
+                  <th class="dayTitle">時間</th>
+                  <th class="reservation-details-title">予約内容</th>
+                </tr>
+              </table>
+            </div>
+            <div id="table-container" class = "once-table table-box">
+              <table id="once-data-table30" style="border-collapse: collapse; width: 100%;">
+                <tbody>
+                  <tr v-for="rowIndex in totalRows" :key="'row-' + rowIndex">
+                    <!-- 時刻表示列 -->
+                    <td class="w-71">{{ getTimeLabel(rowIndex) }}</td>
+              
+                    <!-- 選択された日付に対応する1列分の予約表示 -->
+                    <td
+                      :style="getCellStyle(rowIndex, selectedDayColIndex)"
+                      :class="{ highlighted: highlightedCells.has(generateCellId(rowIndex, selectedDayColIndex)) }"
+                    >
+                      <div class="disp-flex">
+                        <div
+                          v-for="(reservation, overlapIndex) in getReservation(generateCellId(rowIndex, selectedDayColIndex))"
+                          :key="'res-day-' + rowIndex + '-' + overlapIndex"
+                          class="reservation-box"
+                          :class="getCellClass(rowIndex, selectedDayColIndex, overlapIndex)"
+                          :style="getReservationCellStyle(rowIndex, selectedDayColIndex, overlapIndex)"
+                          :data-reservation-id="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start' ? reservation.reservation_id : null"
+                          @click="handleReservationClick(reservation)"
+                        >
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'" class="mr-5">
+                            {{reservation.name}}
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'" class="mr-5">
+                            {{reservation.create_by}}
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'">
+                            {{reservation.starttime}} ~
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'">
+                            {{reservation.endtime}}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="day-10-table" style="display: none;">
+            <div class="table-box scroll" id="onday-table-box">
+              <table class="table-title">
+                <tr id="outputTitle">
+                  <th class="dayTitle">時間</th>
+                  <th class="reservation-details-title">予約内容</th>
+                </tr>
+              </table>
+            </div>
+            <div id="table-container" class = "once-table table-box">
+              <table id="once-data-table10" style="border: 1px solid black;border-collapse: collapse;">
+                <tbody>
+                  <tr v-for="rowIndex in totalRows" :key="'row-' + rowIndex">
+                    <!-- 時刻表示列 -->
+                    <td class="w-71">{{ getTimeLabel(rowIndex) }}</td>
+              
+                    <!-- 選択された日付に対応する1列分の予約表示 -->
+                    <td
+                      :style="getCellStyle(rowIndex, selectedDayColIndex)"
+                      :class="{ highlighted: highlightedCells.has(generateCellId(rowIndex, selectedDayColIndex)) }"
+                    >
+                      <div class="disp-flex">
+                        <div
+                          v-for="(reservation, overlapIndex) in getReservation(generateCellId(rowIndex, selectedDayColIndex))"
+                          :key="'res-day-' + rowIndex + '-' + overlapIndex"
+                          class="reservation-box"
+                          :class="getCellClass(rowIndex, selectedDayColIndex, overlapIndex)"
+                          :style="getReservationCellStyle(rowIndex, selectedDayColIndex, overlapIndex)"
+                          :data-reservation-id="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start' ? reservation.reservation_id : null"
+                          @click="handleReservationClick(reservation)"
+                        >
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'" class="mr-5">
+                            {{reservation.name}}
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'" class="mr-5">
+                            {{reservation.create_by}}
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'">
+                            {{reservation.starttime}} ~
+                          </span>
+                          <span v-if="getCellClass(rowIndex, selectedDayColIndex, overlapIndex) === 'reservation-start'">
+                            {{reservation.endtime}}
+                          </span>
+                          
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="easyModal" class="modal" @click.self="closeModal">
+          <div class="modal-content">
+            <h4 class="padding-1 margin-t1 margin-b1">予約フォーム</h4>
+            <div class="Reservation-details">
+              <form id="reservation">
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>予約名</span><span class="ast">*</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <input type="text" class="w-34 h1" placeholder="予約名" v-model="reservation_detail.reservationName" required>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>場所</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <select name="reservation-area" class="w-35 h1" v-model="reservation_detail.reservationArea">
+                    <option value="会議室">会議室</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>用途</span>
+                </div>
+                <div class="reservation-content  padding-1 w-8">
+                  <select name="reservation-area" class="w-35 h1" v-model="reservation_detail.puropose">
+                    <option value="月次報告">月次報告</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>参加者</span>
+                </div>
+                <div class="reservation-content  padding-1 w-8">
+                  <input type="text" class="w-34 h1" placeholder="参加者" v-model="reservation_detail.attendee">
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>備考</span>
+                </div>
+                <div class="reservation-content  padding-1 w-8">
+                  <textarea class="w-34 h1" placeholder="備考" v-model="reservation_detail.note"></textarea>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>開始時刻</span><span class="ast">*</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <input type="date" id="start" name="trip-start" class="h2"v-model="reservation_detail.startDay"/>
+                  <select name="select-hour" class="w-100 h1 ml-10"v-model="reservation_detail.startHour" :disabled="allday_flag" required>
+                    <option value="00">00</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                  </select>
+                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.startMinute" :disabled="allday_flag" required>
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="44">44</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>終了時刻</span><span class="ast">*</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2"v-model="reservation_detail.endDay" />
+                  <select name="select-hour" class="w-100 h1 ml-10" v-model="reservation_detail.endHour" :disabled="allday_flag">
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                  </select>
+                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.endMinute" :disabled="allday_flag">
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="44">44</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="w-5 flex">
+                  <div class="title padding-1 w-6">
+                    <span>終日予約</span>
+                  </div>
+                  <div class="reservation-content padding-1">
+                    <input type="checkbox" id="allday" name="programming" v-model="allday_flag">
+                  </div>
+                </div>
+                <div class="w-5 flex">
+                  <div class="title padding-1 w-6">
+                    <span>繰り返し予約</span>
+                  </div>
+                  <div class="reservation-content padding-1">
+                    <input type="checkbox"  id="repeat" name="programming"v-model="repeat_flag">
+                  </div>
+                </div>
+              </div>
+              <div id="repeat_settings" class="repeat-options hidden">
+                <div class="flex items-center h4">
+                  <p class="w-2 padding-1">繰り返し単位</p>
+                    <label class="mr-3"><input type="radio" name="repeat_unit" id="daily" @click="changeRepeatUnit()"> 日単位</label>
+                    <label class="mr-3 ml-6"><input type="radio" name="repeat_unit" id="weekly" @click="changeRepeatUnit()"> 週単位</label>
+                    <label class="mr-3 ml-6"><input type="radio" name="repeat_unit" id="monthly" @click="changeRepeatUnit()"> 月単位</label>
+                </div>
+                <div id="dairy-options">
+                  <div id="daily_options" class="flex">
+                    <div class="w-2  padding-1">
+                      <label>パターン</label>
+                    </div>
+                    <div class="w-100  padding-1">
+                      <select class="w-100" v-model="daily.pattern">
+                        <option value="dayly">毎日</option>
+                        <option value="daily_exclude_weekends">土・日・祝を除く毎日</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="repeat-settings padding-1">
+                    <label>開始日<input type="date" v-model="reservation_detail.startDay" class="ml-2" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="daily.endDate" class="ml-50"></label>
+                  </div>
+                </div>
+                <div id="weekly-options">
+                  <div>
+                    <div class=" padding-1 flex">
+                      <div class="title padding-1 w-2">
+                        <span>曜日</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value="Sun" v-model="weekly.weekday">月</label>
+                        <label class="ml-5"><input type="checkbox" value="Tue" v-model="weekly.weekday">火</label>
+                        <label class="ml-5"><input type="checkbox" value="Wed" v-model="weekly.weekday">水</label>
+                        <label class="ml-5"><input type="checkbox" value="Thu" v-model="weekly.weekday">木</label>
+                        <label class="ml-5"><input type="checkbox" value="Fri" v-model="weekly.weekday">金</label>
+                        <label class="ml-5"><input type="checkbox" value="Sat" v-model="weekly.weekday">土</label>
+                        <label class="ml-5"><input type="checkbox" value="Sun" v-model="weekly.weekday">日</label>
+                      </div>
+                    </div>     
+                  </div>
+                  <div class="repeat-settings padding-1">
+                    <label>開始日<input type="date" v-model="reservation_detail.startDay" class="ml-2" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="weekly.endDate" class="ml-50"></label>
+                  </div>
+                </div>
+                <div id="monthly-options">
+                  <div>
+                    <div class=" padding-1 flex">
+                      <div class="title padding-1 w-2">
+                        <span>週番</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value=1 v-model="monthly.weeknumber">第1</label>
+                        <label class="ml-5"><input type="checkbox" value=2 v-model="monthly.weeknumber">第2</label>
+                        <label class="ml-5"><input type="checkbox" value=3 v-model="monthly.weeknumber">第3</label>
+                        <label class="ml-5"><input type="checkbox" value=4 v-model="monthly.weeknumber">第4</label>
+                        <label class="ml-5"><input type="checkbox" value=5 v-model="monthly.weeknumber">第5</label>
+                       </div>
+                     </div>     
+                  </div>
+                   <div>
+                    <div class=" padding-1 flex">
+                       <div class="title padding-1 w-2">
+                        <span>曜日</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value="Sun" v-model="monthly.weekday">月</label>
+                        <label class="ml-5"><input type="checkbox" value="Tue" v-model="monthly.weekday">火</label>
+                        <label class="ml-5"><input type="checkbox" value="Wed" v-model="monthly.weekday">水</label>
+                        <label class="ml-5"><input type="checkbox" value="Thu" v-model="monthly.weekday">木</label>
+                        <label class="ml-5"><input type="checkbox" value="Fri" v-model="monthly.weekday">金</label>
+                        <label class="ml-5"><input type="checkbox" value="Sat" v-model="monthly.weekday">土</label>
+                        <label class="ml-5"><input type="checkbox" value="Sun" v-model="monthly.weekday">日</label>
+                      </div>
+                    </div>     
+                  </div>     
+                  <div class="repeat-settings padding-1">
+                    <label>開始日<input type="date" class="ml-2" v-model="reservation_detail.startDay" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="monthly.endDate" class="ml-50"></label>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center padding-1 space w-full">
+                <button type="button" class="button margin-r1" @click="reservationRegistration()">登録</button>
+                <button type="button" id ="deletebutton" class="button margin-r1 disp-none" @click="deletereservation()">予約削除</button>
+                <button type="button" class="button margin-r1" @click="closeModal()">キャンセル</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+  </main>
+  <footer>
+    <p class="copyright">© LEBEN INC. ALL RIGHT RESERVED.</p>
+  </footer>
+  <script src="../js/vue_ reservation.js"></script>
+  <script src="../js/main.js"></script>
+</body> 
+</html>

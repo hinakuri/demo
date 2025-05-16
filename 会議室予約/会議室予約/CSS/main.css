@@ -1,0 +1,431 @@
+html,body{
+      height: 100%;
+      margin: 0;
+      justify-content: center; /* 水平方向の中央寄せ */
+      align-items: center; /* 垂直方向の中央寄せ */
+      font-family: "メイリオ" ;
+
+        
+}
+main{
+  height: 95.3%;
+  width: 100%;
+  margin: 0 auto;
+}
+.copyright{
+  color: white;
+  margin: auto;
+}
+.header{
+  width: 100%;
+  height: 65px;
+  background-color: #4D93D9;
+  display: flex;
+  align-items: center;
+}
+footer{
+    width: 100%;
+    height: 40px;
+    background-color: #4D93D9;
+    display: flex;
+    align-items: center;
+}
+.imgstyle{
+  margin-top: 8px;
+  width:160px;
+  height: 50px;
+}
+.option{
+  margin: 0 0 0 auto;
+}
+.humbergermenu{
+  margin: 0 0 0 auto;
+}
+.company{
+  color: white;
+}
+.mr-10{
+  margin-right: 10px;
+}
+#outputTable{
+    width: 1100px;
+    max-height: 500px; 
+    overflow-y: scroll; 
+    margin-left: 17px;
+}
+.disp{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+   margin-top: 10px;
+}
+#table-container{
+  width: 1100px;
+  max-height: 500px; 
+  overflow-y: scroll; 
+  margin-left: 17px;
+}
+#table-id{
+    max-height: 500px;
+    overflow: auto;
+}
+#table-id th,#table-id td{
+    border: 1px solid black;
+    width: 40px;
+    height: 32px;
+}
+#table-wrapper{
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column; /* 縦に並べる */
+  align-items: center; /* 中央に揃える */
+  width: 100%;
+}
+.disp-flex{
+  display: flex;
+}
+#tables-container {
+  display: flex;
+  justify-content: center; /* テーブル同士の間隔を均等に配置 */
+  gap: 20px; /* テーブル間の間隔を調整 */
+  flex-wrap: wrap; /* 画面サイズが小さいときは折り返す */
+  width: 100%;
+}
+.scroll{
+  overflow-y: scroll;
+}
+.scroll::-webkit-scrollbar{
+  opacity: 0;
+}
+.disp-hidden {
+  border: none !important;
+  visibility: hidden;
+  width: 40px !important;
+}
+
+.table-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#table-hedder {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+}
+#table-hedder th,#table-hedder td{
+    border: 1px solid black;
+    width: 145px;
+    height: 30px;
+}
+th, td {
+text-align: center;
+ }
+#table-header th {
+background-color: lightgray;
+}
+th,#table-hedder td {
+    border-bottom: hidden;
+}
+#outputDay td{
+   font-weight: bold; 
+   text-align: left;
+   text-decoration: underline;
+}
+.day-table{
+  display: none;
+}
+.dayTitle{
+  width: 100px;
+  border-right: 1px solid black;
+}
+#onday-table-box{
+  margin-left: 17px;
+  width: 1100px;
+}
+.table-title{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#outputTitle{
+  width: 100%;
+}
+.reservation-details-title{
+  min-width: 1000px;
+  background-color: rgb(207, 205, 205);
+}
+
+.weekdays{
+    background-color: rgb(207, 205, 205);
+}
+.first-block{
+    width: 100px;
+    border-bottom: 1px solid black;
+    border-right: 3px solid black;
+}
+#onece-table{
+  display: none;
+}
+
+.button {
+    position: relative;
+    font-family: serif;
+  }
+
+  .button:hover {
+    cursor: pointer;
+  }
+
+  .modal {
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  .modal-content {
+    background-color: #f4f4f4;
+    margin: 15% auto;
+    width: 550px;
+    min-height: 300px;
+    box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2),0 7px 20px 0 rgba(0,0,0,0.17);
+    animation-name: modalopen;
+    animation-duration: 1s;
+  }
+  .flex{
+    display: flex;
+  }
+  .padding-1{
+    padding: .5rem;;
+  }
+
+   @keyframes modalopen {
+    from {opacity: 0}
+    to {opacity: 1}
+   }
+   #dairy-options{
+    display: none;
+   }
+   #weekly-options{
+    display: none;
+   }
+   #monthly-options{
+    display: none;
+   }
+
+
+
+  .modal-header {
+    padding: 3px 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .modalClose:hover {
+    cursor: pointer;
+  }
+  .w-full{
+    width: 100%;
+  }
+  .h1 {
+    height: 25px;
+  }
+  .h2{
+    height: 20px;
+  }
+  .h4 {
+    height: 40px;
+  }
+  .items-center{
+    align-items: center;
+  }
+  .margin-t1{
+    margin-top: 5px;
+  }
+  .margin-b1{
+    margin-bottom: 5px;
+  }
+  .w-2{
+    width: 20%;
+  }
+  .w-25{
+    width: 250px;
+  }
+  .w-50{
+    width:50%;
+  }
+  .w-60{
+    width: 60px;
+  }
+  .w-30{
+    width: 39px !important;
+  }
+  .w-9{
+    width: 9px !important;
+    border:1px solid black;
+  }
+  .w-70{
+    width: 70px;
+  }
+  .w-71{
+    width: 78px;
+    border:1px solid black;
+  }
+  .w-100{
+    width: 100px;
+  }
+  .registration{
+    width: 150px; 
+    height: 50px;
+    font-size:20px ;
+    border: 1.5px solid black;
+    border-radius: 10px;
+  }
+  .w-140{
+    width: 145px !important;
+  }
+  .w-8{
+    width: 80%;
+  }
+  .w-6{
+    width: 60%;
+  }
+  .w-35{
+    width: 350px;
+  }
+  .w-34{
+    width: 342px;
+  }
+  .w-5{
+    width: 40%;
+  }
+  .ml-10 {
+    margin-left: 5%;
+  }
+  .space{
+    justify-content: space-between;
+  }
+  .button{
+    cursor: pointer;
+    width: 120px;
+    height: 30px;
+  }
+  .margin-r1{
+    margin: 0 80px;
+  }
+  .margin-r2{
+    margin: 0 50px;
+  }
+  .w-1{
+    width: 10%;
+  }
+  .mr-3{
+    margin-right: 3px;
+  }
+  .mr-5{
+    margin-right: 5px;
+  }
+  .ml-1{
+    margin-left:28px
+  }
+  .ml-2{
+    margin-left: 14%;
+  }
+  .ml-3{
+    margin-left: 15px;
+  }
+  .ml-15{
+    margin-left: 14px;
+  }
+  .ml-35{
+    margin-left: 35px;
+  }
+  .ml-5{
+    margin-left: 13px;
+  }
+  .ml-6{
+    margin-left: 60px;
+  }
+  .ml-7{
+    margin-left: 47.5%;
+  }
+  .ast{
+    color: red;
+  }
+  .mt-20{
+    margin-top: 20px;
+  }
+  #modelOpen{
+    margin-top: 10px;
+    
+  }
+  .ml-40{
+    margin-left: 46.7%;
+  }
+  .ml-50{
+    margin-left: 50px;
+  }
+  .ml-13 {
+    margin-left: 200px;
+  }
+  .flex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .hidden {
+    display: none;
+  }
+  table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    empty-cells: hide;
+  }
+  .disp-none{
+    display: none;
+  }
+.reservation-box {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #D6F1FF;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.reservation-start {
+  margin-top: 1px;     /* ← 上に隙間を作る */
+  margin-left: 2px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background-color: #D6F1FF;
+}
+
+.reservation-end {
+  margin-bottom: 1px;  /* ← 下に隙間を作る */
+  margin-left: 2px;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  background-color: #D6F1FF;
+}
+
+.reservation-middle {
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  margin-left: 2px;
+}

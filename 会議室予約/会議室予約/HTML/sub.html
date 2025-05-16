@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../CSS/main.css">
+</head>
+<body>
+  <button id="modalOpen" class="button">Click Me</button>
+    <div id="easyModal" class="modal">
+      <div class="modal-content">
+        <h4 class="padding-1 margin-t1 margin-b1">予約フォーム</h4>
+        <div class="Reservation-details">
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>予約名</span>
+            </div>
+            <div class="reservation-content padding-1 w-8">
+              <input type="text" class="w-34 h1" placeholder="予約名">
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>場所</span>
+            </div>
+            <div class="reservation-content padding-1 w-8">
+              <select name="reservation-area" class="w-35 h1">
+                <option value="">会議室</option>
+              </select>
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>開始時刻</span>
+            </div>
+            <div class="reservation-content padding-1 w-8">
+              <input type="date" id="start" name="trip-start" value="2025-01-01" min="2025-01-31" max="20" class="h2"/>
+              <select name="select-hour" class="w-100 h1">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+                <option value="">4</option>
+                <option value="">5</option>
+                <option value="">6</option>
+                <option value="">7</option>
+                <option value="">8</option>
+                <option value="">9</option>
+                <option value="">10</option>
+                <option value="">11</option>
+                <option value="">12</option>
+                <option value="">13</option>
+                <option value="">14</option>
+                <option value="">15</option>
+                <option value="">15</option>
+                <option value="">16</option>
+                <option value="">17</option>
+                <option value="">18</option>
+                <option value="">19</option>
+                <option value="">20</option>
+                <option value="">21</option>
+                <option value="">22</option>
+                <option value="">23</option>
+                <option value="">24</option>
+              </select>
+              <select name="select-minute" class="w-100 h1">
+                <option value="">00</option>
+                <option value="">15</option>
+                <option value="">30</option>
+                <option value="">44</option>
+              </select>
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>終了時刻</span>
+            </div>
+            <div class="reservation-content padding-1 w-8">
+              <input type="date" id="start" name="trip-start" value="2025-01-01" min="2025-01-31" max="20" class="h2"/>
+              <select name="select-hour" class="w-100 h1">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+                <option value="">4</option>
+                <option value="">5</option>
+                <option value="">6</option>
+                <option value="">7</option>
+                <option value="">8</option>
+                <option value="">9</option>
+                <option value="">10</option>
+                <option value="">11</option>
+                <option value="">12</option>
+                <option value="">13</option>
+                <option value="">14</option>
+                <option value="">15</option>
+                <option value="">15</option>
+                <option value="">16</option>
+                <option value="">17</option>
+                <option value="">18</option>
+                <option value="">19</option>
+                <option value="">20</option>
+                <option value="">21</option>
+                <option value="">22</option>
+                <option value="">23</option>
+                <option value="">24</option>
+              </select>
+              <select name="select-minute" class="w-100 h1">
+                <option value="">00</option>
+                <option value="">15</option>
+                <option value="">30</option>
+                <option value="">44</option>
+              </select>
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>用途</span>
+            </div>
+            <div class="reservation-content  padding-1 w-8">
+              <select name="reservation-area" class="w-35 h1">
+                <option value="">用途</option>
+              </select>
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>参加者</span>
+            </div>
+            <div class="reservation-content  padding-1 w-8">
+              <input type="text" class="w-34 h1" placeholder="参加者">
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="title padding-1 w-2">
+              <span>備考</span>
+            </div>
+            <div class="reservation-content  padding-1 w-8">
+              <textarea class="w-34 h1" placeholder="備考"></textarea>
+            </div>
+          </div>
+          <div class="reservation-name flex items-center">
+            <div class="w-5 flex">
+              <div class="title padding-1 w-6">
+                <span>終日予約</span>
+              </div>
+              <div class="reservation-content padding-1">
+                <input type="checkbox" name="programming" value="html">
+              </div>
+            </div>
+            <div class="w-5 flex">
+              <div class="title padding-1 w-6">
+                <span>繰り返し予約</span>
+              </div>
+              <div class="reservation-content padding-1">
+                <input type="checkbox"  id="repeat" name="programming" value="html">
+              </div>
+            </div>
+          </div>
+          <div id="repeat_settings" class="repeat-options hidden">
+            <div class="flex items-center h4">
+              <p class="w-2 padding-1">繰り返し単位</p>
+                <label class="mr-3"><input type="radio" name="repeat_unit" id="daily" onclick="changeRepeatUnit()"> 日単位</label>
+                <label class="mr-3 ml-6"><input type="radio" name="repeat_unit" id="weekly" onclick="changeRepeatUnit()"> 週単位</label>
+                <label class="mr-3 ml-6"><input type="radio" name="repeat_unit" id="monthly" onclick="changeRepeatUnit()"> 月単位</label>
+            </div>
+            <div id="dairy-options">
+              <div id="daily_options" class="flex">
+                <div class="w-2  padding-1">
+                  <label>パターン</label>
+                </div>
+                <div class="w-100  padding-1">
+                  <select class="w-100">
+                    <option>日ごと</option>
+                  </select>
+                </div>
+                <div class="ml-5  padding-1">
+                  <input type="radio" name="repeat_unit" id="daily"> すべての平日</label>
+                </div>     
+              </div>
+              <div class="repeat-settings padding-1">
+                <label>開始日<input type="date" value="" class="ml-2"></label>
+                <label><input type="radio" name="endType" value="" class="ml-1">終了日<input type="date" value="" class="ml-5"></label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="" class="mt-20">反復回数
+                  <select name="select-hour" class="mt-20 ml-5">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                    <option value="">4</option>
+                    <option value="">5</option>
+                    <option value="">6</option>
+                  </select>
+                </label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="">未定
+                </label>
+              </div>
+            </div>
+            <div id="weekly-options">
+              <div class="flex">
+                <div class="w-2  padding-1">
+                  <label>パターン</label>
+                </div>
+                <div class="w-100  padding-1">
+                  <select class="w-100">
+                    <option>週ごと</option>
+                  </select>
+                </div>
+                <div class="ml-35  padding-1">
+                  <label>曜日
+                    <select class="w-100 ml-1">
+                      <option>月曜日</option>
+                      <option>火曜日</option>
+                      <option>水曜日</option>
+                      <option>木曜日</option>
+                      <option>金曜日</option>
+                    </select>
+                  </label>
+                </div>     
+              </div>
+              <div class="repeat-settings padding-1">
+                <label>開始日<input type="date" value="" class="ml-2"></label>
+                <label><input type="radio" name="endType" value="" class="ml-1">終了日<input type="date" value="" class="ml-5"></label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="" class="mt-20">反復回数
+                  <select name="select-hour" class="mt-20 ml-5">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                    <option value="">4</option>
+                    <option value="">5</option>
+                    <option value="">6</option>
+                  </select>
+                </label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="">未定
+                </label>
+              </div>
+            </div>
+            <div id="monthly-options">
+              <div class="flex-wrap">
+                <div class="w-2  padding-1">
+                  <label>パターン</label>
+                </div>
+                <div class="w-100  padding-1">
+                  <select class="w-100">
+                    <option>か月ごと</option>
+                  </select>
+                </div>
+                <div class="ml-15  padding-1">
+                  <input type="radio">
+                  <label>
+                    <select class="w-100">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                      <option>9</option>
+                      <option>10</option>
+                      <option>11</option>
+                      <option>12</option>
+                      <option>13</option>
+                      <option>14</option>
+                      <option>15</option>
+                      <option>16</option>
+                      <option>17</option>
+                      <option>18</option>
+                      <option>19</option>
+                      <option>20</option>
+                    </select>
+                    日
+                  </label>
+                </div><br>
+                <div class="flex ml-40 padding-1">
+                  <input type="radio">
+                  <label>
+                    <select class="w-60">
+                      <option>第1</option>
+                      <option>第2</option>
+                      <option>第3</option>
+                      <option>第4</option>
+                      <option>第5</option>
+                    </select>
+                  </label>
+                  <label class="ml-10">
+                    <select class="w-70 ml-1">
+                      <option>月曜日</option>
+                      <option>火曜日</option>
+                      <option>水曜日</option>
+                      <option>木曜日</option>
+                      <option>金曜日</option>
+                      <option>土曜日</option>
+                      <option>日曜日</option>
+                    </select>
+                  </label>
+                </div>     
+              </div>
+              <div class="repeat-settings padding-1">
+                <label>開始日<input type="date" value="" class="ml-2"></label>
+                <label><input type="radio" name="endType" value="" class="ml-1">終了日<input type="date" value="" class="ml-5"></label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="" class="mt-20">反復回数
+                  <select name="select-hour" class="mt-20 ml-5">
+                    <option value="">1</option>
+                    <option value="">2</option>
+                    <option value="">3</option>
+                    <option value="">4</option>
+                    <option value="">5</option>
+                    <option value="">6</option>
+                  </select>
+                </label>
+                <br>
+                <label class="ml-7">
+                  <input type="radio" name="endType" value="">未定
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center padding-1 space w-full">
+            <button type="button" class="button margin-r1">登録</button>
+            <button type="button" class="button margin-r1">キャンセル</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById("repeat").addEventListener("change", function() {
+      document.getElementById("repeat_settings").classList.toggle("hidden", !this.checked);
+      });
+    </script>
+    <!-- <Script>
+      const buttonOpen = document.getElementById('modalOpen');
+      const modal = document.getElementById('easyModal');
+      const buttonClose = document.getElementsByClassName('modalClose')[0];
+
+      // ボタンがクリックされた時
+      buttonOpen.addEventListener('click', modalOpen);
+      function modalOpen() {
+        modal.style.display = 'block';
+      }
+
+      // バツ印がクリックされた時
+      buttonClose.addEventListener('click', modalClose);
+      function modalClose() {
+        modal.style.display = 'none';
+      }
+
+      // モーダルコンテンツ以外がクリックされた時
+      addEventListener('click', outsideClose);
+      function outsideClose(e) {
+        if (e.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+    </Script> -->
+
+    <script>
+      function changeRepeatUnit(){
+
+        const daily = document.getElementById('daily');
+        const weekly = document.getElementById('weekly');
+        const monthly = document.getElementById('monthly')
+        const dairyoptions = document.getElementById('dairy-options');
+        const weeklyoptions = document.getElementById('weekly-options');
+        const monthlyoptions = document.getElementById('monthly-options');
+
+        if (daily.checked) {
+          dairyoptions.style.display = 'block';
+        } else {
+          dairyoptions.style.display = 'none';
+        }
+        if (weekly.checked) {
+          weeklyoptions.style.display ='block';
+        } else{
+          weeklyoptions.style.display = 'none';
+        }
+        if (monthly.checked) {
+          monthlyoptions.style.display ='block';
+        } else{
+          monthlyoptions.style.display = 'none';
+        }
+      }
+
+    </script>
+</body>
+</html>

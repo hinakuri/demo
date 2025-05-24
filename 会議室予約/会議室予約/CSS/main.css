@@ -1,11 +1,9 @@
 html,body{
-      height: 100%;
-      margin: 0;
-      justify-content: center; /* 水平方向の中央寄せ */
-      align-items: center; /* 垂直方向の中央寄せ */
-      font-family: "メイリオ" ;
-
-        
+  height: 100%;
+  margin: 0;
+  justify-content: center; /* 水平方向の中央寄せ */
+  align-items: center; /* 垂直方向の中央寄せ */
+  font-family: "メイリオ" ;     
 }
 main{
   height: 95.3%;
@@ -24,11 +22,11 @@ main{
   align-items: center;
 }
 footer{
-    width: 100%;
-    height: 40px;
-    background-color: #4D93D9;
-    display: flex;
-    align-items: center;
+  width: 100%;
+  height: 40px;
+  background-color: #4D93D9;
+  display: flex;
+  align-items: center;
 }
 .imgstyle{
   margin-top: 8px;
@@ -48,10 +46,10 @@ footer{
   margin-right: 10px;
 }
 #outputTable{
-    width: 1100px;
-    max-height: 500px; 
-    overflow-y: scroll; 
-    margin-left: 17px;
+  width: 1100px;
+  max-height: 500px; 
+  overflow-y: scroll; 
+  margin-left: 17px;
 }
 .disp{
   display: flex;
@@ -66,13 +64,18 @@ footer{
   margin-left: 17px;
 }
 #table-id{
-    max-height: 500px;
-    overflow: auto;
+  max-height: 500px;
+  overflow: auto;
+}
+#table-hedder th,#table-hedder td{
+  border: 1px solid black;
+  /* width: 39px; */
+  height: 32px;
 }
 #table-id th,#table-id td{
-    border: 1px solid black;
-    width: 40px;
-    height: 32px;
+  border: 1px solid black;
+  /* width: 39px; */
+  height: 32px;
 }
 #table-wrapper{
   margin-top: 30px;
@@ -116,11 +119,6 @@ footer{
     border-top: none;
     border-bottom: none;
 }
-#table-hedder th,#table-hedder td{
-    border: 1px solid black;
-    width: 145px;
-    height: 30px;
-}
 th, td {
 text-align: center;
  }
@@ -156,10 +154,6 @@ th,#table-hedder td {
 .reservation-details-title{
   min-width: 1000px;
   background-color: rgb(207, 205, 205);
-}
-
-.weekdays{
-    background-color: rgb(207, 205, 205);
 }
 .first-block{
     width: 100px;
@@ -265,11 +259,16 @@ th,#table-hedder td {
     width: 60px;
   }
   .w-30{
-    width: 39px !important;
+    width: 39px ;
   }
   .w-9{
     width: 9px !important;
     border:1px solid black;
+  }
+  .w-39{
+    width: 39px;
+    background-color: white;
+    border: none !important;
   }
   .w-70{
     width: 70px;
@@ -428,4 +427,16 @@ th,#table-hedder td {
   border-right: 1px solid black;
   border-left: 1px solid black;
   margin-left: 2px;
+}
+.weekdays{
+    background-color: rgb(207, 205, 205);
+    width: 145px;
+}
+.weekday{
+    background-color: beige;
+    width: 145px;
+}
+.week{
+    background-color: white;
+    width: 145px;
 }

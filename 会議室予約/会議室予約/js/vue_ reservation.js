@@ -21,14 +21,12 @@ var app = Vue.createApp({
       repeat_flag:false,
       isDailyView: false,
       selectedDate: null,
-      //  schedule: [
-      //    { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
-      //    { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
-      //   { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", date: "20250516", starttime: "11:00", endtime: "13:30" },
-      //    { "id": 4,reservation_id: 202505151200, name: "予約3",create_by: "山田太郎", date: "20250515", starttime: "12:00", endtime: "13:00" }
-      //  ],
-       schedule: [
-       ],
+      schedule: [
+        { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
+        { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
+        { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", date: "20250516", starttime: "11:00", endtime: "13:30" },
+        { "id": 4,reservation_id: 202505151200, name: "予約3",create_by: "山田太郎", date: "20250515", starttime: "12:00", endtime: "13:00" }
+      ],
       daily:{recurring_unit:"",pattern:"",startDate:"",endDate:""},
       weekly:{recurring_unit:"",weekday:[],startDate:"",endType:""},
       monthly:{recurring_unit:"",weeknumber:[],weekday:[],startDate:"",endDate:""},
@@ -118,8 +116,8 @@ var app = Vue.createApp({
         puropose: this.reservation_detail.puropose,
         attendee: attendees,
         note: this.reservation_detail.note,
-        is_all: this.allday_flag,
-        is_repeat:this.repeat_flag,
+        allday_flag: this.allday_flag,
+        repeat_flag:this.repeat_flag,
         option: option
       }
       console.log(body); 
@@ -128,13 +126,13 @@ var app = Vue.createApp({
         await this.executePost(path, body); 
         const response = await this.executeGet(path); 
         // this.schedule = response.schedule;
-        // this.schedule =  [
-        //   { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
-        //   { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
-        //   { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", date: "20250516", starttime: "11:00", endtime: "13:30" },
-        //   { "id": 4,reservation_id: 202505151200, name: "予約3",create_by: "山田太郎", date: "20250515", starttime: "12:00", endtime: "13:00" },
-        //   { "id": 5,reservation_id: 202505100800, name: "予約3",create_by: "山田太郎", date: "20250510", starttime: "08:00", endtime: "09:00" }
-        // ]
+        this.schedule =  [
+          { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
+          { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", date: "20250515", starttime: "10:00", endtime: "11:00" },
+          { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", date: "20250516", starttime: "11:00", endtime: "13:30" },
+          { "id": 4,reservation_id: 202505151200, name: "予約3",create_by: "山田太郎", date: "20250515", starttime: "12:00", endtime: "13:00" },
+          { "id": 5,reservation_id: 202505100800, name: "予約3",create_by: "山田太郎", date: "20250510", starttime: "08:00", endtime: "09:00" }
+        ]
 
       } catch (error) {
         console.error("更新中にエラー:", error);
@@ -326,7 +324,7 @@ executeGet: function(path){
     },
 
     getReservationCellStyle(rowIndex, colIndex, overlapIndex) {
-  const baseWidth = this.intervalType !== "15" ? 60 : 140;
+  const baseWidth = this.intervalType !== "15" ? 980 : 140;
   const cellId = this.generateCellId(rowIndex, colIndex);
   const overlapCount = this.getOverlapCount(cellId);
   const widthPerSlot = baseWidth / overlapCount;
@@ -462,6 +460,7 @@ executeGet: function(path){
       const cellTime = parseInt(cellId.slice(8, 12), 10); // HHMM
 
       const overlappingReservations = this.schedule.filter(reservation => {
+        /* ★ キーがなければ除外して true/false 判定に進まない ★ */
         if (!reservation.date || !reservation.starttime || !reservation.endtime) {
           return false;
         }
@@ -535,12 +534,12 @@ executeGet: function(path){
             // this.schedule  = response.schedule 
       // }).bind(this)
 
-        // this.schedule =  [
-        //    { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", starttime: "10:00", endtime: "11:00" },
-        //   { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", starttime: "10:00", endtime: "11:00" },
-        //   { "id": 4,reservation_id: 202505152400, name: "予約3",create_by: "山田太郎", starttime: "14:00", endtime: "15:00" },
-        //   { "id": 5,reservation_id: 202505100800, name: "予約3",create_by: "山田太郎", starttime: "08:00", endtime: "09:00" }
-        // ]
+        this.schedule =  [
+           { "id": 1,reservation_id: 202505151000, name: "予約1",create_by: "山田太郎", starttime: "10:00", endtime: "11:00" },
+          { "id": 2,reservation_id: 202505151000, name: "予約4",create_by: "山田太郎", starttime: "10:00", endtime: "11:00" },
+          { "id": 4,reservation_id: 202505152400, name: "予約3",create_by: "山田太郎", starttime: "14:00", endtime: "15:00" },
+          { "id": 5,reservation_id: 202505100800, name: "予約3",create_by: "山田太郎", starttime: "08:00", endtime: "09:00" }
+        ]
 
         //YYYY/MM/DDをYYYYMMDDにする
         if (Object.keys(this.schedule).length !== 0 && this.schedule.constructor === Array) {
@@ -578,9 +577,9 @@ executeGet: function(path){
                     // this.schedule  = response.schedule 
               // }).bind(this)
 
-        // this.schedule =  [
-        //   { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", starttime: "11:00", endtime: "13:30" },
-        // ]
+        this.schedule =  [
+          { "id": 3,reservation_id: 202505161100, name: "予約2",create_by: "山田太郎", starttime: "11:00", endtime: "13:30" },
+        ]
         //YYYY/MM/DDをYYYYMMDDにする
         const formattedDate = this.selectedDate.replace(/\//g, "");
 

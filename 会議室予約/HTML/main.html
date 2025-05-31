@@ -11,29 +11,38 @@
 </head>
 <body>
     <main id="app">
+      <div class="header">
+        <div class="material">
+          <div class="ml-5" @click="resetWindow"><img src="../CSS/Logo_yoyakukun_20250517.jpg" class="imgstyle"></div>
+          <div class="company ml-5">株式会社 レーベン</div>
+          <div class="option">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#D9D9D9"  class="mr-10 color-gray"><path d="m370-80-16-128q-13-5-24.5-12T307-235l-119 50L78-375l103-78q-1-7-1-13.5v-27q0-6.5 1-13.5L78-585l110-190 119 50q11-8 23-15t24-12l16-128h220l16 128q13 5 24.5 12t22.5 15l119-50 110 190-103 78q1 7 1 13.5v27q0 6.5-2 13.5l103 78-110 190-118-50q-11 8-23 15t-24 12L590-80H370Zm70-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#FFFFFF" class="mr-10 color-white"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+          </div>
+        </div>
+      </div>
         <div>
-          <h3 @click="resetWindow">会議室よやく君</h3>
-            <table style="width: 1100px;">
-                <tr>
-                    <th style="text-align: left;">
-                      <a href="#" @click.prevent="prevWeek" style="text-decoration: none; color: black;">&lt;</a>
-                      <span id="outputDate">
-                        {{ isDailyView ? selectedDate : formattedWeekRange }}
-                      </span>
-                      <a href="#" @click.prevent="nextWeek" style="text-decoration: none; color: black;">&gt;</a>
-                    </th>
-                    <th class="flex ml-13 he-20 w-25 disp-none" id="switching-unit">
-                      <div class="flex items-center">
-                        <p>表示単位:</p>
-                          <label class="ml-1"><input type="radio" name="outTable" id="ten-minits" @click="changeoutputTable()"> 10分</label>
-                          <label class="ml-1"><input type="radio" name="outTable" id="thirty-minits" @click="changeoutputTable()">30分</label>
-                      </div>
-                    </th>
-                    <th style="text-align: right; width: 180px;">
-                        <button id="modelOpen" type="button" class= "registration" @click="openModal">新規登録</button>
-                    </th>
-                </tr>
-            </table>
+          <div class="content">
+            <div style="text-align: left;">
+              <a href="#" @click.prevent="prevWeek" style="text-decoration: none; color: black;">&lt;</a>
+              <span id="outputDate">
+                {{ isDailyView ? selectedDate : formattedWeekRange }}
+              </span>
+              <a href="#" @click.prevent="nextWeek" style="text-decoration: none; color: black;">&gt;</a>
+            </div>
+            <div class="ml-auto disp-flex">
+              <div  class="flex he-20 w-25 disp-none" id="switching-unit">
+                <div class="flex items-center">
+                  <p>表示単位:</p>
+                    <label class="ml-1"><input type="radio" name="outTable" id="ten-minits" @click="changeoutputTable()"> 10分</label>
+                    <label class="ml-1"><input type="radio" name="outTable" id="thirty-minits" @click="changeoutputTable()">30分</label>
+                </div>
+              </div>
+              <div class="addBtn">
+                <svg id="modelOpen" @click="openModal" xmlns="http://www.w3.org/2000/svg" width="180px" height="45px" viewBox="0 0 102 43" fill="#A7C4E5"><rect x="1" y="1" width="100" height="41" rx="20" ry="20" fill="white" stroke="#1D5D99" stroke-width="2"/><line x1="51" y1="15" x2="51" y2="28" stroke="#1D5D99" stroke-width="4"/><line x1="44" y1="21.5" x2="58" y2="21.5" stroke="#1D5D99" stroke-width="4"/></svg>
+              </div>
+            </div>
+          </div>
         </div>
         <div id="table-wrapper">
           <div class="weekly-table">
@@ -46,8 +55,8 @@
                   <th class="weekdays">水</th>
                   <th class="weekdays">木</th>
                   <th class="weekdays">金</th>
-                  <th style="background-color: #6f6ff8;">土</th>
-                  <th style="background-color: #FCE4D6;">日</th>
+                  <th class="sataday">土</th>
+                  <th class="sunday">日</th>
                 </tr>
                 <tr id="outputDay" style="background-color: beige;">
                   <td class="disp-hidden"></td>
@@ -92,7 +101,7 @@
               </table>
             </div>
             <div id="table-container" class = "once-table table-box">
-              <table id="once-data-table30" style="border-collapse: collapse; width: 100%;">
+              <table id="once-data-table30" style="border-collapse: collapse;">
                 <tbody>
                   <tr v-for="rowIndex in totalRows" :key="'row-' + rowIndex">
                     <!-- 時刻表示列 -->
@@ -211,86 +220,6 @@
               </div>
               <div class="reservation-name flex items-center">
                 <div class="title padding-1 w-2">
-                  <span>開始時刻</span><span class="ast">*</span>
-                </div>
-                <div class="reservation-content padding-1 w-8">
-                  <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2" v-model="reservation_detail.startDay"/>
-                  <select name="select-hour" class="w-100 h1 ml-10"v-model="reservation_detail.startHour" required>
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                  </select>
-                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.startMinute" required>
-                    <option value="00">00</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="44">44</option>
-                  </select>
-                </div>
-              </div>
-              <div class="reservation-name flex items-center">
-                <div class="title padding-1 w-2">
-                  <span>終了時刻</span><span class="ast">*</span>
-                </div>
-                <div class="reservation-content padding-1 w-8">
-                  <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2"v-model="reservation_detail.endDay" />
-                  <select name="select-hour" class="w-100 h1 ml-10" v-model="reservation_detail.endHour">
-                    <option value="01">01</option>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                    <option value="06">06</option>
-                    <option value="07">07</option>
-                    <option value="08">08</option>
-                    <option value="09">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                  </select>
-                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.endMinute">
-                    <option value="00">00</option>
-                    <option value="15">15</option>
-                    <option value="30">30</option>
-                    <option value="44">44</option>
-                  </select>
-                </div>
-              </div>
-              <div class="reservation-name flex items-center">
-                <div class="title padding-1 w-2">
                   <span>用途</span>
                 </div>
                 <div class="reservation-content  padding-1 w-8">
@@ -316,12 +245,93 @@
                 </div>
               </div>
               <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>開始時刻</span><span class="ast">*</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <input type="date" id="start" name="trip-start" class="h2"v-model="reservation_detail.startDay"/>
+                  <select name="select-hour" class="w-100 h1 ml-10"v-model="reservation_detail.startHour" :disabled="allday_flag" required>
+                    <option value="00">00</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                  </select>
+                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.startMinute" :disabled="allday_flag" required>
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="44">44</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
+                <div class="title padding-1 w-2">
+                  <span>終了時刻</span><span class="ast">*</span>
+                </div>
+                <div class="reservation-content padding-1 w-8">
+                  <input type="date" id="start" name="trip-start" value="2025-04-01" min="2025-01-31" max="20" class="h2"v-model="reservation_detail.endDay" />
+                  <select name="select-hour" class="w-100 h1 ml-10" v-model="reservation_detail.endHour" :disabled="allday_flag">
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                  </select>
+                  <select name="select-minute" class="w-100 h1 ml-10" v-model="reservation_detail.endMinute" :disabled="allday_flag">
+                    <option value="00">00</option>
+                    <option value="15">15</option>
+                    <option value="30">30</option>
+                    <option value="44">44</option>
+                  </select>
+                </div>
+              </div>
+              <div class="reservation-name flex items-center">
                 <div class="w-5 flex">
                   <div class="title padding-1 w-6">
                     <span>終日予約</span>
                   </div>
                   <div class="reservation-content padding-1">
-                    <input type="checkbox" name="programming" value="html">
+                    <input type="checkbox" id="allday" name="programming" v-model="allday_flag">
                   </div>
                 </div>
                 <div class="w-5 flex">
@@ -329,7 +339,7 @@
                     <span>繰り返し予約</span>
                   </div>
                   <div class="reservation-content padding-1">
-                    <input type="checkbox"  id="repeat" name="programming" value="html">
+                    <input type="checkbox"  id="repeat" name="programming"v-model="repeat_flag">
                   </div>
                 </div>
               </div>
@@ -346,159 +356,73 @@
                       <label>パターン</label>
                     </div>
                     <div class="w-100  padding-1">
-                      <select class="w-100" v-model="daily.repeatDay">
-                        <option value="日ごと">日ごと</option>
+                      <select class="w-100" v-model="daily.pattern">
+                        <option value="dayly">毎日</option>
+                        <option value="daily_exclude_weekends">土・日・祝を除く毎日</option>
                       </select>
                     </div>
-                    <div class="ml-5  padding-1">
-                      <input type="radio" value = "すべての平日" name="repeat_unit" id="daily" v-model="daily.allday"> すべての平日</label>
-                    </div>     
                   </div>
                   <div class="repeat-settings padding-1">
-                    <label>開始日<input type="date" v-model="daily.startDate" class="ml-2"></label>
-                    <label><input type="radio" name="endType" value="終了日" class="ml-1"v-model="daily.endType">終了日<input type="date" v-model="daily.endDate" class="ml-5"></label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="反復回数" class="mt-20" v-model="daily.endType">反復回数
-                      <select name="select-hour" class="mt-20 ml-5" v-model="daily.repeatCount">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                      </select>
-                    </label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="未定" v-model="daily.endType">未定
-                    </label>
+                    <label>開始日<input type="date" v-model="reservation_detail.startDay" class="ml-2" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="daily.endDate" class="ml-50"></label>
                   </div>
                 </div>
                 <div id="weekly-options">
-                  <div class="flex">
-                    <div class="w-2  padding-1">
-                      <label>パターン</label>
-                    </div>
-                    <div class="w-100  padding-1">
-                      <select class="w-100" v-model="weekly.repeatWeek">
-                        <option value="週ごと">週ごと</option>
-                      </select>
-                    </div>
-                    <div class="ml-35  padding-1">
-                      <label>曜日
-                        <select class="w-100 ml-1" v-model="weekly.dayofweek">
-                          <option value="月">月曜日</option>
-                          <option value="火">火曜日</option>
-                          <option value="水">水曜日</option>
-                          <option value="木">木曜日</option>
-                          <option value="金">金曜日</option>
-                        </select>
-                      </label>
+                  <div>
+                    <div class=" padding-1 flex">
+                      <div class="title padding-1 w-2">
+                        <span>曜日</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value="Sun" v-model="weekly.weekday">月</label>
+                        <label class="ml-5"><input type="checkbox" value="Tue" v-model="weekly.weekday">火</label>
+                        <label class="ml-5"><input type="checkbox" value="Wed" v-model="weekly.weekday">水</label>
+                        <label class="ml-5"><input type="checkbox" value="Thu" v-model="weekly.weekday">木</label>
+                        <label class="ml-5"><input type="checkbox" value="Fri" v-model="weekly.weekday">金</label>
+                        <label class="ml-5"><input type="checkbox" value="Sat" v-model="weekly.weekday">土</label>
+                        <label class="ml-5"><input type="checkbox" value="Sun" v-model="weekly.weekday">日</label>
+                      </div>
                     </div>     
                   </div>
                   <div class="repeat-settings padding-1">
-                    <label>開始日<input type="date" v-model="weekly.startDate" class="ml-2"></label>
-                    <label><input type="radio" name="endType" value="終了日" v-model="weekly.endType" class="ml-1">終了日<input type="date" class="ml-5" v-model="weekly.endDate"></label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="反復回数" v-model="weekly.endType" class="mt-20">反復回数
-                      <select name="select-hour" class="mt-20 ml-5" v-model="weekly.repeatCount">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                      </select>
-                    </label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="未定" v-model="weekly.endType">未定
-                    </label>
+                    <label>開始日<input type="date" v-model="reservation_detail.startDay" class="ml-2" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="weekly.endDate" class="ml-50"></label>
                   </div>
                 </div>
                 <div id="monthly-options">
-                  <div class="flex-wrap">
-                    <div class="w-2  padding-1">
-                      <label>パターン</label>
-                    </div>
-                    <div class="w-100  padding-1">
-                      <select class="w-100" v-model="monthly.repeatMonth">
-                        <option value ="週ごと">か月ごと</option>
-                      </select>
-                    </div>
-                    <div class="ml-15  padding-1">
-                      <input type="radio" name="patern" v-model="monthly.repeat">
-                      <label>
-                        <select class="w-100" v-model="monthly.day">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-                          <option value="16">16</option>
-                          <option value="17">17</option>
-                          <option value="18">18</option>
-                          <option value="19">19</option>
-                          <option value="20">20</option>
-                        </select>
-                        日
-                      </label>
-                    </div><br>
-                    <div class="flex ml-40 padding-1">
-                      <input type="radio" name="patern" value="monthly.repeat">
-                      <label>
-                        <select class="w-60" v-model="monthly.selectnumber">
-                          <option value ="第1">第1</option>
-                          <option value ="第2">第2</option>
-                          <option value ="第3">第3</option>
-                          <option value ="第4">第4</option>
-                          <option value ="第5">第5</option>
-                        </select>
-                      </label>
-                      <label class="ml-10">
-                        <select class="w-70 ml-1" v-model="monthly.selectdate">
-                          <option value="月曜日">月曜日</option>
-                          <option value="火曜日">火曜日</option>
-                          <option value="水曜日">水曜日</option>
-                          <option value="木曜日">木曜日</option>
-                          <option value="金曜日">金曜日</option>
-                          <option value="土曜日">土曜日</option>
-                          <option value="日曜日">日曜日</option>
-                        </select>
-                      </label>
-                    </div>     
+                  <div>
+                    <div class=" padding-1 flex">
+                      <div class="title padding-1 w-2">
+                        <span>週番</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value=1 v-model="monthly.weeknumber">第1</label>
+                        <label class="ml-5"><input type="checkbox" value=2 v-model="monthly.weeknumber">第2</label>
+                        <label class="ml-5"><input type="checkbox" value=3 v-model="monthly.weeknumber">第3</label>
+                        <label class="ml-5"><input type="checkbox" value=4 v-model="monthly.weeknumber">第4</label>
+                        <label class="ml-5"><input type="checkbox" value=5 v-model="monthly.weeknumber">第5</label>
+                       </div>
+                     </div>     
                   </div>
+                   <div>
+                    <div class=" padding-1 flex">
+                       <div class="title padding-1 w-2">
+                        <span>曜日</span>
+                      </div>
+                      <div class="padding-1 w-8">
+                        <label><input type="checkbox" value="Sun" v-model="monthly.weekday">月</label>
+                        <label class="ml-5"><input type="checkbox" value="Tue" v-model="monthly.weekday">火</label>
+                        <label class="ml-5"><input type="checkbox" value="Wed" v-model="monthly.weekday">水</label>
+                        <label class="ml-5"><input type="checkbox" value="Thu" v-model="monthly.weekday">木</label>
+                        <label class="ml-5"><input type="checkbox" value="Fri" v-model="monthly.weekday">金</label>
+                        <label class="ml-5"><input type="checkbox" value="Sat" v-model="monthly.weekday">土</label>
+                        <label class="ml-5"><input type="checkbox" value="Sun" v-model="monthly.weekday">日</label>
+                      </div>
+                    </div>     
+                  </div>     
                   <div class="repeat-settings padding-1">
-                    <label>開始日<input type="date" class="ml-2" v-model="monthly.startDate"></label>
-                    <label><input type="radio" name="endType" value="終了日" v-model="monthly.endType" class="ml-1">終了日<input type="date" v-model="monthly.endDate" class="ml-5"></label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="反復回数" class="mt-20" v-model="monthly.endType">反復回数
-                      <select name="select-hour" class="mt-20 ml-5" v-model="monthly.repeatCount">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                      </select>
-                    </label>
-                    <br>
-                    <label class="ml-7">
-                      <input type="radio" name="endType" value="未定" v-model="monthly.endType">未定
-                    </label>
+                    <label>開始日<input type="date" class="ml-2" v-model="reservation_detail.startDay" disabled></label>
+                    <label class="ml-15">終了日<input type="date" v-model="monthly.endDate" class="ml-50"></label>
                   </div>
                 </div>
               </div>
@@ -511,8 +435,11 @@
             </div>
           </div>
         </div>
-  </main> 
+  </main>
+  <footer>
+    <p class="copyright">© LEBEN INC. ALL RIGHT RESERVED.</p>
+  </footer>
   <script src="../js/vue_ reservation.js"></script>
   <script src="../js/main.js"></script>
-</body>
+</body> 
 </html>
